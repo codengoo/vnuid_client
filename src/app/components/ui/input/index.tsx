@@ -5,8 +5,16 @@ import { LuEye, LuEyeOff } from "react-icons/lu";
 interface IVnInput extends TextInputProps {
   label?: string;
   id: string;
+  className?: string;
 }
-export function VnInput({ label, id, type, ...props }: IVnInput) {
+export function VnInput({
+  label,
+  id,
+  type,
+  className,
+  rightIcon,
+  ...props
+}: IVnInput) {
   const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => {
@@ -25,7 +33,7 @@ export function VnInput({ label, id, type, ...props }: IVnInput) {
   };
 
   return (
-    <div>
+    <div className={className}>
       {label && (
         <div className="mb-1 block text-gray-800">
           <Label htmlFor={id}>{label}</Label>
@@ -35,7 +43,7 @@ export function VnInput({ label, id, type, ...props }: IVnInput) {
         id={id}
         {...props}
         type={type === "password" ? (isVisible ? "text" : "password") : type}
-        rightIcon={() => renderRightIcon()}
+        rightIcon={rightIcon ? rightIcon : () => renderRightIcon()}
         theme={{
           field: {
             rightIcon: {
