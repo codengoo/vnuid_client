@@ -1,6 +1,5 @@
-import "./globals.css";
 import { Lobster, Prompt } from "next/font/google";
-import { default as cn } from "classnames";
+import "./globals.css";
 
 const lobster = Lobster({
   subsets: ["vietnamese"],
@@ -20,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${lobster.variable} ${prompt.variable}`}>
+      <body className={`${lobster.variable} ${prompt.variable} font-prompt`}>
         {children}
       </body>
     </html>
