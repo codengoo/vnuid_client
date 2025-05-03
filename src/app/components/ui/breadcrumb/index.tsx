@@ -3,25 +3,30 @@ import { VnBreadcrumbItem, VnBreadcrumbSplitter } from "./components";
 
 export function VnBreadCrumb() {
   const pathname = usePathname();
-  const section = pathname.split("/").filter(Boolean).splice(1);
+  const sections = pathname.split("/").filter(Boolean);
+  const baseurl = sections.shift();
 
+  console.log(sections, baseurl);
+  
   return (
     <div className="flex gap-1 items-center">
-      {section.length === 0 && <VnBreadcrumbItem isMain label="" />}
-      {section.map((item, index) => {
+      {sections.length === 0 && (
+        <VnBreadcrumbItem isMain label="" url={baseurl || "/"} />
+      )}
+      {sections.map((item, index) => {
         if (index === 0) {
           return (
             <>
-              <VnBreadcrumbItem isMain label={item} />
+              <VnBreadcrumbItem isMain label={item} url="" />
               <VnBreadcrumbSplitter />
             </>
           );
-        } else if (index === section.length - 1) {
-          return <VnBreadcrumbItem label={item} />;
+        } else if (index === sections.length - 1) {
+          return <VnBreadcrumbItem label={item} url="" />;
         } else {
           return (
             <>
-              <VnBreadcrumbItem label={item} />
+              <VnBreadcrumbItem label={item} url="" />
               <VnBreadcrumbSplitter />
             </>
           );

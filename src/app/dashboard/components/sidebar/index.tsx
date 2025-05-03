@@ -13,8 +13,8 @@ import { Tab } from "../tab";
 
 export function Sidebar() {
   return (
-    <div className="w-[350px] p-6 gap-8 flex flex-col">
-      <div className="flex  justify-between">
+    <div className="w-[350px] p-6 py-4 gap-8 flex flex-col">
+      <div className="flex justify-between">
         <VnLogo />
         <VnIconButton icon={LuChevronsRightLeft} />
       </div>

@@ -51,7 +51,7 @@ export function VnInput({
             },
             input: {
               colors: {
-                gray: "border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-500 focus:border-tertiary focus:ring-tertiary font-prompt font-medium",
+                gray: "border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-500 focus:border-tertiary focus:ring-tertiary font-prompt font-medium text-gray-600",
               },
             },
           },

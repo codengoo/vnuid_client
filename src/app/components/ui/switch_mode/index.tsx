@@ -52,7 +52,7 @@ export function VnSwitchMode({
   };
 
   return (
-    <div className="flex items-center gap-1 bg-gray-100 w-fit rounded-lg overflow-hidden border border-gray-300">
+    <div className="flex items-center gap-1 bg-gray-100 w-fit h-fit rounded-xl border border-gray-300">
       <Mode
         icon={icon1}
         label={mode1}

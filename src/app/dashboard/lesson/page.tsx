@@ -1,7 +1,8 @@
-"use client"
+"use client";
 
-import { VnSwitchMode } from "@/app/components/ui";
-import { LuClock, LuClockAlert } from "react-icons/lu";
+import { LessonCard } from "@/app/components";
+import { VnInput, VnSwitchMode } from "@/app/components/ui";
+import { LuClock, LuClockAlert, LuSearch } from "react-icons/lu";
 
 export default function Lesson() {
   return (
@@ -13,13 +14,34 @@ export default function Lesson() {
         <h3 className="text-gray-500 font-medium">Tuần 15, Học kỳ 1, UET</h3>
       </div>
 
-      <div>
-        <VnSwitchMode
-          icon1={LuClockAlert}
-          mode1="Incoming"
-          icon2={LuClock}
-          mode2="All lessons"
-        />
+      <div className="space-y-4 mt-10">
+        <div className="flex justify-between">
+          <VnSwitchMode
+            icon1={LuClockAlert}
+            mode1="Incoming"
+            icon2={LuClock}
+            mode2="All lessons"
+          />
+
+          <VnInput
+            placeholder="Search"
+            rightIcon={LuSearch}
+            id="lesson_search"
+          />
+        </div>
+
+        <div className="grid grid-cols-4 gap-2 justify-between items-center">
+          <LessonCard />
+          <LessonCard />
+          <LessonCard />
+          <LessonCard />
+          <LessonCard />
+          <LessonCard />
+          <LessonCard />
+          <LessonCard />
+          <LessonCard />
+          <LessonCard />
+        </div>
       </div>
     </div>
   );
