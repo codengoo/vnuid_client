@@ -1,7 +1,7 @@
 "use client";
 
 import { VnButton, VnChip } from "@/app/_components/ui";
-import { HeaderInfo } from "@/app/_layout";
+import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
 import { LuPlus } from "react-icons/lu";
@@ -69,8 +69,8 @@ export default function LessonDetail() {
   };
 
   return (
-    <div className="space-y-8 h-full overflow-y-scroll overflow-x-hidden scroll">
-      <HeaderInfo>
+    <MainContentInfo>
+      <HeaderContentInfo>
         <LessonInfo />
         <div className="flex gap-4">
           <div className="w-1/3 space-y-4 flex-none">
@@ -117,7 +117,7 @@ export default function LessonDetail() {
             />
           </div>
         </div>
-      </HeaderInfo>
+      </HeaderContentInfo>
 
       <div className="space-y-4">
         <div className="flex gap-4 items-center">
@@ -181,6 +181,6 @@ export default function LessonDetail() {
           <StudentBox />
         </div>
       </div>
-    </div>
+    </MainContentInfo>
   );
 }

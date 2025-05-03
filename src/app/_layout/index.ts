@@ -1,1 +1,2 @@
-export * from "./header_info"
+export * from "./header_info";
+export * from "./main_info";
