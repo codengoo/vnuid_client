@@ -1,0 +1,24 @@
+"use client";
+
+import { VnBreadCrumb } from "../components/ui";
+import { Header, Sidebar } from "./components";
+
+interface MainLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function MainLayout({ children }: MainLayoutProps) {
+  return (
+    <div className="bg-primary-200 w-screen h-screen flex gap-4 overflow-hidden">
+      <Sidebar />
+
+      <div className="h-full w-full flex flex-col">
+        <Header />
+        <div className="bg-white w-full h-full shadow-2xl rounded-tl-2xl p-5 space-y-4">
+          <VnBreadCrumb />
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}

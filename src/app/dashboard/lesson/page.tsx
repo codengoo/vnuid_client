@@ -1,0 +1,26 @@
+"use client"
+
+import { VnSwitchMode } from "@/app/components/ui";
+import { LuClock, LuClockAlert } from "react-icons/lu";
+
+export default function Lesson() {
+  return (
+    <div className="space-y-4">
+      <div className="bg-gray-100 p-4 rounded-xl border border-gray-300 space-y-2">
+        <h2 className="text-3xl text-gray-600 font-semibold">
+          Thứ 3, ngày 20 - 01 - 2025
+        </h2>
+        <h3 className="text-gray-500 font-medium">Tuần 15, Học kỳ 1, UET</h3>
+      </div>
+
+      <div>
+        <VnSwitchMode
+          icon1={LuClockAlert}
+          mode1="Incoming"
+          icon2={LuClock}
+          mode2="All lessons"
+        />
+      </div>
+    </div>
+  );
+}
