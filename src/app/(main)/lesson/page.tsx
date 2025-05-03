@@ -1,18 +1,19 @@
 "use client";
 
-import { LessonCard } from "@/app/components";
-import { VnInput, VnSwitchMode } from "@/app/components/ui";
+import { LessonCard } from "@/app/_components";
+import { VnInput, VnSwitchMode } from "@/app/_components/ui";
+import { HeaderInfo } from "@/app/_layout";
 import { LuClock, LuClockAlert, LuSearch } from "react-icons/lu";
 
 export default function Lesson() {
   return (
     <div className="space-y-4">
-      <div className="bg-gray-100 p-4 rounded-xl border border-gray-300 space-y-2">
+      <HeaderInfo>
         <h2 className="text-3xl text-gray-600 font-semibold">
           Thứ 3, ngày 20 - 01 - 2025
         </h2>
         <h3 className="text-gray-500 font-medium">Tuần 15, Học kỳ 1, UET</h3>
-      </div>
+      </HeaderInfo>
 
       <div className="space-y-4 mt-10">
         <div className="flex justify-between">

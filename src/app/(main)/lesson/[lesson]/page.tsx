@@ -1,11 +1,12 @@
 "use client";
 
-import { VnButton, VnChip, VnIconButton } from "@/app/components/ui";
+import { VnButton, VnChip } from "@/app/_components/ui";
+import { HeaderInfo } from "@/app/_layout";
 import { ApexOptions } from "apexcharts";
-import { LuFileDown, LuPlus, LuQrCode } from "react-icons/lu";
-import { InfoBox, StudentBox } from "./components";
-import AttendanceBox from "./components/attendance-box";
 import Chart from "react-apexcharts";
+import { LuPlus } from "react-icons/lu";
+import { InfoBox, LessonInfo, StudentBox } from "./_components";
+import AttendanceBox from "./_components/attendance-box";
 export default function LessonDetail() {
   const options: ApexOptions = {
     chart: {
@@ -69,26 +70,8 @@ export default function LessonDetail() {
 
   return (
     <div className="space-y-8 h-full overflow-y-scroll overflow-x-hidden scroll">
-      <div className="bg-gray-100 border border-gray-300 p-4 rounded-xl space-y-4">
-        <div className="flex items-start justify-between">
-          <div>
-            <div className="flex gap-2 items-center">
-              <h1 className="text-4xl text-gray-700 font-medium">
-                INT2203 - Nhập môn lập trình
-              </h1>
-              <span className="text-tertiary-200 bg-secondary h-fit rounded-lg px-2 py-1 font-medium text-sm">
-                Đang trong quá trình điểm danh
-              </span>
-            </div>
-            <h3 className="text-gray-500">Thứ 3, ngày 20 - 01 - 2025</h3>
-            <h3 className="text-gray-500">Giảng đường 3, UET</h3>
-          </div>
-          <div>
-            <VnIconButton icon={LuFileDown} />
-            <VnIconButton icon={LuQrCode} />
-          </div>
-        </div>
-
+      <HeaderInfo>
+        <LessonInfo />
         <div className="flex gap-4">
           <div className="w-1/3 space-y-4 flex-none">
             <div className="bg-white border-dotted border-gray-300 border-2 rounded-lg p-4 space-y-1">
@@ -134,7 +117,7 @@ export default function LessonDetail() {
             />
           </div>
         </div>
-      </div>
+      </HeaderInfo>
 
       <div className="space-y-4">
         <div className="flex gap-4 items-center">

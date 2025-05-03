@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { IoLogoGoogle } from "react-icons/io";
 import { LuLock, LuMail } from "react-icons/lu";
-import { LangButton, VnButton, VnInput } from "../components/ui";
+import { LangButton, VnButton, VnInput } from "../_components/ui";
 
 export default function LoginPage() {
   return (

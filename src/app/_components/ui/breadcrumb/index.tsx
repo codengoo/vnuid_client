@@ -2,10 +2,10 @@ import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
 import { VnBreadcrumbItem, VnBreadcrumbSplitter } from "./components";
 
-const generateBreadCrumb = (sections: string[], baseUrl: string) => {
+const generateBreadCrumb = (sections: string[]) => {
   const components: ReactNode[] = [];
 
-  let link = "/" + baseUrl;
+  let link = "";
   for (let index = 0; index < sections.length; index++) {
     const item = sections[index];
     link = `${link}/${item}`;
@@ -26,11 +26,10 @@ const generateBreadCrumb = (sections: string[], baseUrl: string) => {
 export function VnBreadCrumb() {
   const pathname = usePathname();
   const sections = pathname.split("/").filter(Boolean);
-  const baseurl = sections.shift();
 
   return (
     <div className="flex gap-1 items-center">
-      {generateBreadCrumb(sections, baseurl || "/")}
+      {generateBreadCrumb(sections)}
     </div>
   );
 }

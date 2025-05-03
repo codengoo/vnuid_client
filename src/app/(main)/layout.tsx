@@ -1,8 +1,8 @@
 "use client";
 
 import { ToastContainer } from "react-toastify";
-import { VnBreadCrumb } from "../components/ui";
-import { Header, Sidebar } from "./components";
+import { VnBreadCrumb } from "../_components/ui";
+import { Header, Sidebar } from "./_components";
 
 interface MainLayoutProps {
   children: React.ReactNode;
