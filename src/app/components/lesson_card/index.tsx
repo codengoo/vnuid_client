@@ -15,7 +15,7 @@ export function LessonCard() {
       </div>
       <div className="flex gap-2">
         <VnChip label="GD3" color="green" />
-        <VnChip label="1h - 3h" color="red" />
+        <VnChip label="1h - 3h" color="yellow" />
       </div>
       <div className="">
         <span className="text-sm text-gray-500">81 sinh viên</span>

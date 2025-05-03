@@ -1,37 +1,36 @@
 import { usePathname } from "next/navigation";
+import { ReactNode } from "react";
 import { VnBreadcrumbItem, VnBreadcrumbSplitter } from "./components";
+
+const generateBreadCrumb = (sections: string[], baseUrl: string) => {
+  const components: ReactNode[] = [];
+
+  let link = "/" + baseUrl;
+  for (let index = 0; index < sections.length; index++) {
+    const item = sections[index];
+    link = `${link}/${item}`;
+
+    const component = (
+      <div key={"br_idx" + index} className="flex items-center">
+        <VnBreadcrumbItem isMain={index === 0} label={item} url={link} />
+        {index !== sections.length - 1 && <VnBreadcrumbSplitter />}
+      </div>
+    );
+
+    components.push(component);
+  }
+
+  return components;
+};
 
 export function VnBreadCrumb() {
   const pathname = usePathname();
   const sections = pathname.split("/").filter(Boolean);
   const baseurl = sections.shift();
 
-  console.log(sections, baseurl);
-  
   return (
     <div className="flex gap-1 items-center">
-      {sections.length === 0 && (
-        <VnBreadcrumbItem isMain label="" url={baseurl || "/"} />
-      )}
-      {sections.map((item, index) => {
-        if (index === 0) {
-          return (
-            <>
-              <VnBreadcrumbItem isMain label={item} url="" />
-              <VnBreadcrumbSplitter />
-            </>
-          );
-        } else if (index === sections.length - 1) {
-          return <VnBreadcrumbItem label={item} url="" />;
-        } else {
-          return (
-            <>
-              <VnBreadcrumbItem label={item} url="" />
-              <VnBreadcrumbSplitter />
-            </>
-          );
-        }
-      })}
+      {generateBreadCrumb(sections, baseurl || "/")}
     </div>
   );
 }

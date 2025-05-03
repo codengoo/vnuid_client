@@ -9,6 +9,9 @@
   --color-tertiary: #9bad74;
   --color-tertiary-200: #636e4a;
   --color-tertiary-800: #363636;
+  --color-highlight: #fff9f1;
+  --color-highlight-200: #ffcb8b;
+  --color-highlight-600: #6f4439;
 
   --font-lobster: var(--font-lobster);
   --font-prompt: var(--font-prompt);
