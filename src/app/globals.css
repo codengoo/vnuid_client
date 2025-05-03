@@ -16,3 +16,21 @@
   --font-lobster: var(--font-lobster);
   --font-prompt: var(--font-prompt);
 }
+
+.scroll {
+  padding-right: 10px;
+}
+.scroll::-webkit-scrollbar {
+  opacity: 0;
+  background: transparent;
+  width: 7px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.scroll::-webkit-scrollbar:hover {
+  opacity: 1;
+}
+.scroll:hover::-webkit-scrollbar-thumb {
+  background: #f0f2f5;
+  border-radius: 10px;
+}

@@ -9,9 +9,10 @@ interface IVnChipProps {
 
 export function VnChip({ label, color = "default", copyable }: IVnChipProps) {
   const handleCopy = () => {
-    copyable && navigator.clipboard.writeText(label);
-    toast("Copy thành công", { type: "success" });
-    console.log("copied");
+    if (copyable) {
+      navigator.clipboard.writeText(label);
+      toast("Copy thành công", { type: "success" });
+    }
   };
 
   return (

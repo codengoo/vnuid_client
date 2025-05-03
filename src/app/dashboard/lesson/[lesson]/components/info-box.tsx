@@ -19,7 +19,7 @@ export function InfoBox({ description, title, value, color }: InfoBoxProps) {
       })}
     >
       <div className="flex items-center gap-2 justify-center">
-        <h1 className="text-lg font-medium">{title}</h1>
+        <h1 className="text-sm">{title}</h1>
         <Tooltip content={description}>
           <LuBadgeAlert size={18} />
         </Tooltip>

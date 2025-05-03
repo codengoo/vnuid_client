@@ -11,7 +11,7 @@ interface ITab {
 
 export function Tab({ icon: Icon, label, url }: ITab) {
   const pathname = usePathname();
-  const isActive = pathname === url;
+  const isActive = pathname.includes(url);
 
   return (
     <Link href={url}>
