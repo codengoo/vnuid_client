@@ -16,10 +16,13 @@ export function Tab({ icon: Icon, label, url }: ITab) {
   return (
     <Link href={url}>
       <div
-        className={cn("gap-4 flex p-3 px-4 items-center", {
-          "bg-secondary border rounded-lg border-tertiary text-tertiary-800 shadow-2xl":
-            isActive,
-        })}
+        className={cn(
+          "gap-4 flex p-3 px-4 items-center text-gray-500 border rounded-lg hover:bg-gray-200  hover:border-gray-300 border-transparent",
+          {
+            "bg-secondary hover:bg-secondary !border-tertiary text-tertiary-800 shadow-2xl":
+              isActive,
+          },
+        )}
       >
         <Icon size={20} />
         <span>{label}</span>
