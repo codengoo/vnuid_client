@@ -1,4 +1,5 @@
 import { default as cn } from "classnames";
+import { MouseEvent } from "react";
 import { IconType } from "react-icons";
 
 interface IVnIconButtonProps {
@@ -13,9 +14,16 @@ export function VnIconButton({
   color = "default",
   size = "md",
   className,
+  onClick,
 }: IVnIconButtonProps) {
+  const handleClick = (ev: MouseEvent) => {
+    ev.stopPropagation();
+    onClick && onClick();
+  };
+
   return (
     <button
+      onClick={handleClick}
       className={cn(
         "p-2 rounded-md hover:bg-gray-200 cursor-pointer w-fit h-fit",
         { "text-tertiary hover:bg-secondary": color === "primary" },

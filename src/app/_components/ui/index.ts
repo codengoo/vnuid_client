@@ -7,3 +7,4 @@ export * from "./input";
 export * from "./lang_button";
 export * from "./switch_mode";
 export * from "./table";
+export * from "./drawer"

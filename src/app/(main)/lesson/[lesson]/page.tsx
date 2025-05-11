@@ -1,13 +1,24 @@
 "use client";
 
+import { StudentCard } from "@/app/_components";
 import { VnButton, VnChip } from "@/app/_components/ui";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
+import { getSubjectDetails } from "@/helpers/subject";
+import { ISubject } from "@/types";
 import { ApexOptions } from "apexcharts";
+import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { LuPlus } from "react-icons/lu";
-import { InfoBox, LessonInfo, StudentBox } from "./_components";
+import { InfoBox, LessonInfo, TeacherBox } from "./_components";
 import AttendanceBox from "./_components/attendance-box";
-export default function LessonDetail() {
+export default function LessonDetail({
+  params,
+}: {
+  params: { lesson: string };
+}) {
+  const { lesson } = params;
+  const [subjectDetail, setSubjectDetail] = useState<ISubject | null>(null);
+
   const options: ApexOptions = {
     chart: {
       type: "area",
@@ -68,24 +79,25 @@ export default function LessonDetail() {
     },
   };
 
+  const prepare = async () => {
+    const subject = await getSubjectDetails(lesson as string);
+    console.log(subject);
+    setSubjectDetail(subject || null);
+  };
+
+  useEffect(() => {
+    prepare();
+  }, []);
+
+  if (subjectDetail === null) return null;
+
   return (
     <MainContentInfo>
       <HeaderContentInfo>
-        <LessonInfo />
+        <LessonInfo subject={subjectDetail} />
         <div className="flex gap-4">
           <div className="w-1/3 space-y-4 flex-none">
-            <div className="bg-white border-dotted border-gray-300 border-2 rounded-lg p-4 space-y-1">
-              <h1 className="text-2xl font-medium text-gray-600">
-                Giảng viên: Trương Minh Đức
-              </h1>
-              <div className="flex gap-2">
-                <VnChip label="ductm@vnu.edu.vn" color="green" copyable />
-                <VnChip label="0123456789" color="yellow" copyable />
-              </div>
-              <h3 className="text-sm text-gray-700">
-                Khoa Công nghệ thông tin, UET
-              </h3>
-            </div>
+            <TeacherBox teacher={subjectDetail.teacher} />
             <div className="grid grid-cols-2 gap-4">
               <InfoBox
                 title="Ty le diem danh"
@@ -128,57 +140,25 @@ export default function LessonDetail() {
         </div>
 
         <div className="grid grid-cols-4 gap-4">
-          <AttendanceBox />
-          <AttendanceBox />
-          <AttendanceBox />
-          <AttendanceBox />
+          {subjectDetail.session.map((session) => (
+            <AttendanceBox key={session.id} session={session} />
+          ))}
         </div>
       </div>
 
       <div className="space-y-4">
         <div className="flex gap-4 items-center">
           <h2 className="text-2xl font-medium text-gray-700">Sinh viên</h2>
-          <VnChip label="81 sinh viên" color="yellow" />
+          <VnChip
+            label={`${subjectDetail.students.length} sinh viên`}
+            color="yellow"
+          />
         </div>
 
         <div className="grid grid-cols-5 gap-4">
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
-          <StudentBox />
+          {subjectDetail.students.map((student) => (
+            <StudentCard student={student} key={student.id} />
+          ))}
         </div>
       </div>
     </MainContentInfo>
