@@ -5,7 +5,7 @@ import { VnButton, VnChip } from "@/app/_components/ui";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
 import { getSubjectDetails } from "@/helpers/subject";
 import { SessionModal } from "@/modal";
-import { ISubject } from "@/types";
+import { ISession, ISubject } from "@/types";
 import { ApexOptions } from "apexcharts";
 import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
@@ -20,6 +20,8 @@ export default function LessonDetail({
   const { lesson } = params;
   const [subjectDetail, setSubjectDetail] = useState<ISubject | null>(null);
   const [isOpenPopup, setOpenPopup] = useState<boolean>(false);
+  const [isOpenEditPopup, setOpenEditPopup] = useState<boolean>(false);
+  const [sessionData, setSessionData] = useState<ISession>();
 
   const options: ApexOptions = {
     chart: {
@@ -85,6 +87,13 @@ export default function LessonDetail({
     setOpenPopup(true);
   };
 
+  const handleEditSession = (id: string) =>{
+    const data = subjectDetail?.session.find((session) => session.id === id);
+    if (!data) return;
+    setSessionData(data);
+    setOpenEditPopup(true);
+  }
+
   const prepare = async () => {
     const subject = await getSubjectDetails(lesson as string);
     console.log(subject);
@@ -147,7 +156,7 @@ export default function LessonDetail({
 
         <div className="grid grid-cols-4 gap-4">
           {subjectDetail.session.map((session) => (
-            <AttendanceBox key={session.id} session={session} />
+            <AttendanceBox key={session.id} session={session} onClick={()=>handleEditSession(session.id)}/>
           ))}
         </div>
 
@@ -155,6 +164,17 @@ export default function LessonDetail({
           isOpenPopup={isOpenPopup}
           setOpenPopup={setOpenPopup}
           subject={subjectDetail}
+          onSuccess={prepare}
+          mode="create"
+        />
+
+        <SessionModal
+          isOpenPopup={isOpenEditPopup}
+          setOpenPopup={setOpenEditPopup}
+          subject={subjectDetail}
+          onSuccess={prepare}
+          mode="update"
+          sessionData={sessionData}
         />
       </div>
 

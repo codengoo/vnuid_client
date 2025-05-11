@@ -1,5 +1,5 @@
 import { Label, TextInput, TextInputProps } from "flowbite-react";
-import { useState } from "react";
+import React, { ForwardedRef, useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 
 interface IVnInput extends TextInputProps {
@@ -7,16 +7,11 @@ interface IVnInput extends TextInputProps {
   id: string;
   className?: string;
 }
-export function VnInput({
-  label,
-  id,
-  type,
-  className,
-  rightIcon,
-  ...props
-}: IVnInput) {
+export const VnInput = React.forwardRef(function (
+  { label, id, type, className, rightIcon, ...props }: IVnInput,
+  ref: ForwardedRef<HTMLInputElement>,
+) {
   const [isVisible, setIsVisible] = useState(false);
-
   const toggleVisibility = () => {
     setIsVisible((prev) => !prev);
   };
@@ -40,6 +35,7 @@ export function VnInput({
         </div>
       )}
       <TextInput
+        ref={ref}
         id={id}
         name={id}
         {...props}
@@ -57,7 +53,7 @@ export function VnInput({
             },
           },
         }}
-      ></TextInput>
+      />
     </div>
   );
-}
+});

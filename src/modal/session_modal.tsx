@@ -1,89 +1,25 @@
-import { VnButton, VnInput, VnPopup, VnSwitch } from "@/app/_components/ui";
+import { VnEditable } from "@/app/_components";
+import { VnButton, VnConfirm, VnPopup, VnSwitch } from "@/app/_components/ui";
 import { AddSessionDefaultValue } from "@/data";
+import { addSession, deleteSession, updateSession } from "@/helpers/subject";
 import { ISession, ISubject } from "@/types";
 import { formatTime } from "@/utils";
-import cn from "classnames";
-import { ChangeEvent, KeyboardEvent, useState } from "react";
-import { IconType } from "react-icons";
+import { useEffect, useState } from "react";
 import { LuCalendarClock, LuHourglass, LuSchool } from "react-icons/lu";
+import { toast } from "react-toastify";
 
 interface ISessionModalProps {
   isOpenPopup: boolean;
   setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
   subject: ISubject;
-}
-
-interface ItemInfo {
-  label: string;
-  editable?: boolean;
-  icon?: IconType;
-  type?: "text" | "time" | "number";
-  value?: any;
-  id: string;
-  onChange?: (value: any) => void;
+  onSuccess: () => {};
+  mode: "create" | "update";
+  sessionData?: ISession;
 }
 
 interface IItemSwitch {
   label: string;
 }
-const ItemInfo = ({
-  label,
-  icon: Icon,
-  editable = true,
-  type = "text",
-  id,
-  value,
-  onChange,
-}: ItemInfo) => {
-  const [isEditMode, setEditMode] = useState(false);
-  const handleKeyEsc = (e: KeyboardEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.key === "Escape") {
-      setEditMode(false);
-    }
-  };
-
-  const handleChangeMode = () => {
-    if (!editable) return;
-    setEditMode(!isEditMode);
-  };
-
-  const handleChangeValue = (e: ChangeEvent) => {
-    if (!onChange) return;
-    onChange((e.target as HTMLInputElement).value);
-  };
-
-  if (!isEditMode)
-    return (
-      <div
-        onClick={handleChangeMode}
-        className={cn(
-          "flex items-center gap-2 rounded-lg p-1 text-gray-600 hover:bg-gray-200",
-          {
-            " cursor-pointer": editable,
-            "cursor-not-allowed": !editable,
-          },
-        )}
-      >
-        {Icon && <Icon size={14} />}
-        <p className="text-sm overflow-hidden truncate text-nowrap">{label}</p>
-      </div>
-    );
-
-  if (isEditMode)
-    return (
-      <VnInput
-        icon={Icon}
-        id={id}
-        onBlur={handleChangeMode}
-        onKeyUp={handleKeyEsc}
-        type={type}
-        value={value}
-        onChange={handleChangeValue}
-      />
-    );
-};
 
 const ItemSwitch = ({ label }: IItemSwitch) => {
   return (
@@ -98,13 +34,54 @@ export function SessionModal({
   isOpenPopup,
   setOpenPopup,
   subject,
+  onSuccess,
+  mode,
+  sessionData,
 }: ISessionModalProps) {
-  const [newSession, setNewSession] = useState<Partial<ISession>>(
-    AddSessionDefaultValue,
-  );
+  const [isLoading, setLoading] = useState(false);
+  const [isShowConfirm, setShowConfirm] = useState(false);
+  const [newSession, setNewSession] = useState<Partial<ISession>>({
+    ...AddSessionDefaultValue,
+    subjectId: subject.id,
+  });
 
-  const handleSave = () => {
-    console.log(newSession);
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      if (mode === "create") {
+        await addSession(newSession);
+        toast.success("Thêm phiên điểm danh thành công");
+      } else {
+        await updateSession(newSession);
+        toast.success("Cập nhật phiên điểm danh thành công");
+      }
+      onSuccess?.();
+      setOpenPopup(false);
+    } catch (error) {
+      console.log(error);
+      toast.error((error as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleConfirm = () => {
+    setShowConfirm(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+      await deleteSession(newSession.id!);
+      toast.success("Xóa phiên điểm danh thành công");
+      onSuccess?.();
+      setOpenPopup(false);
+    } catch (error) {
+      console.log(error);
+      toast.error((error as Error).message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChangeDuration = (value: string) => {
@@ -131,29 +108,70 @@ export function SessionModal({
     });
   };
 
+  const handleChangeName = (value: string) => {
+    setNewSession({
+      ...newSession,
+      name: value,
+    });
+  };
+
+  useEffect(() => {
+    if (mode === "update" && sessionData) {
+      setNewSession(sessionData);
+    } else {
+      setNewSession({
+        ...AddSessionDefaultValue,
+        subjectId: subject.id,
+      });
+    }
+  }, [mode, sessionData, subject.id]);
+
   return (
     <VnPopup
       openModal={isOpenPopup}
       setOpenModal={setOpenPopup}
       title="Cài đặt phiên điểm danh"
       leftTitleComponent={
-        <VnButton label="Lưu" onClick={handleSave} size="sm" />
+        <div className="flex gap-2">
+          {mode === "update" && (
+            <VnButton
+              label="Xóa"
+              color="red"
+              onClick={handleConfirm}
+              size="sm"
+              disabled={isLoading}
+            />
+          )}
+
+          <VnButton
+            label="Lưu"
+            onClick={handleSave}
+            size="sm"
+            disabled={isLoading}
+          />
+        </div>
       }
     >
       <div className="space-y-4">
         <div className="p-4 rounded-lg border border-gray-200 bg-gray-100 space-y-2">
-          <h1 className="text-xl font-medium text-gray-700">
-            {newSession.name}
-          </h1>
-          <div className="grid grid-cols-3 gap-2">
-            <ItemInfo
+          <VnEditable
+            label={newSession.name || "Checkin"}
+            editable={true}
+            id="name"
+            value={newSession.name}
+            type="text"
+            onChange={handleChangeName}
+            isTitle
+          />
+          <div className="grid grid-cols-3 gap-2 h-14 items-center">
+            <VnEditable
               label={subject.address}
               icon={LuSchool}
               editable={false}
               id="address"
             />
             {/* <ItemInfo label={subject.address} icon={LuSchool} /> */}
-            <ItemInfo
+            <VnEditable
               label={`Lúc ${formatTime(newSession.start)}`}
               icon={LuCalendarClock}
               type="time"
@@ -161,7 +179,7 @@ export function SessionModal({
               value={formatTime(newSession.start)}
               onChange={handleChangeStart}
             />
-            <ItemInfo
+            <VnEditable
               label={`Trong ${newSession.duration} phút`}
               icon={LuHourglass}
               type="number"
@@ -176,6 +194,13 @@ export function SessionModal({
           <ItemSwitch label="Xác thực khuôn mặt" />
           <ItemSwitch label="Xác thực vị trí" />
         </div>
+
+        <VnConfirm
+          title="Bạn có chắc muốn xóa không"
+          openModal={isShowConfirm}
+          setOpenModal={setShowConfirm}
+          onOK={handleDelete}
+        />
       </div>
     </VnPopup>
   );

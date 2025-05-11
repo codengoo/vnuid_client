@@ -36,6 +36,6 @@ export interface ISession {
   start: string;
   duration: number;
   repeat: string;
-  subjectID: string;
+  subjectId: string;
   subject: ISubject;
 }

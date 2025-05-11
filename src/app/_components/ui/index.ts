@@ -10,3 +10,4 @@ export * from "./table";
 export * from "./drawer"
 export * from "./popup"
 export * from "./switch"
+export * from "./confirm"
