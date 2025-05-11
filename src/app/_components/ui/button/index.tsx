@@ -21,7 +21,7 @@ export function VnButton({ id, icon: Icon, label, ...props }: IVnButtonProps) {
         },
       }}
     >
-      {Icon && <Icon size={20}/>}
+      {Icon && <Icon size={20} />}
       {label}
     </Button>
   );

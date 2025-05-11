@@ -8,3 +8,5 @@ export * from "./lang_button";
 export * from "./switch_mode";
 export * from "./table";
 export * from "./drawer"
+export * from "./popup"
+export * from "./switch"

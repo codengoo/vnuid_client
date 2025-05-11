@@ -41,6 +41,7 @@ export function VnInput({
       )}
       <TextInput
         id={id}
+        name={id}
         {...props}
         type={type === "password" ? (isVisible ? "text" : "password") : type}
         rightIcon={rightIcon ? rightIcon : () => renderRightIcon()}
@@ -51,7 +52,7 @@ export function VnInput({
             },
             input: {
               colors: {
-                gray: "border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-500 focus:border-tertiary focus:ring-tertiary font-prompt font-medium text-gray-600",
+                gray: "border-gray-300 bg-gray-50 placeholder-gray-500 focus:border-tertiary focus:ring-tertiary font-prompt font-medium text-gray-600",
               },
             },
           },

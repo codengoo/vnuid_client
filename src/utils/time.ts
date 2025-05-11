@@ -15,6 +15,6 @@ export function formatCurrentDate() {
   return formattedDate;
 }
 
-export function formatTime(date: Date | string) {
+export function formatTime(date: Date | string = new Date()) {
   return format(date, "HH:mm");
 }

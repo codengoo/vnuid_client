@@ -4,6 +4,7 @@ import { StudentCard } from "@/app/_components";
 import { VnButton, VnChip } from "@/app/_components/ui";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
 import { getSubjectDetails } from "@/helpers/subject";
+import { SessionModal } from "@/modal";
 import { ISubject } from "@/types";
 import { ApexOptions } from "apexcharts";
 import { useEffect, useState } from "react";
@@ -18,6 +19,7 @@ export default function LessonDetail({
 }) {
   const { lesson } = params;
   const [subjectDetail, setSubjectDetail] = useState<ISubject | null>(null);
+  const [isOpenPopup, setOpenPopup] = useState<boolean>(false);
 
   const options: ApexOptions = {
     chart: {
@@ -79,6 +81,10 @@ export default function LessonDetail({
     },
   };
 
+  const handleOpenPopup = () => {
+    setOpenPopup(true);
+  };
+
   const prepare = async () => {
     const subject = await getSubjectDetails(lesson as string);
     console.log(subject);
@@ -136,7 +142,7 @@ export default function LessonDetail({
           <h2 className="text-2xl font-medium text-gray-700">
             Cấu hình điểm danh
           </h2>
-          <VnButton label="Thêm" icon={LuPlus} />
+          <VnButton label="Thêm" icon={LuPlus} onClick={handleOpenPopup} />
         </div>
 
         <div className="grid grid-cols-4 gap-4">
@@ -144,6 +150,12 @@ export default function LessonDetail({
             <AttendanceBox key={session.id} session={session} />
           ))}
         </div>
+
+        <SessionModal
+          isOpenPopup={isOpenPopup}
+          setOpenPopup={setOpenPopup}
+          subject={subjectDetail}
+        />
       </div>
 
       <div className="space-y-4">
