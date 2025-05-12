@@ -8,4 +8,5 @@ export const fetcher = axios.create({
     // Authorization: "Bearer " + localStorage.getItem("token"),
     Authorization: "Bearer " + token,
   },
+  // withCredentials: true,
 });

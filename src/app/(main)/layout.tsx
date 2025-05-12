@@ -1,6 +1,4 @@
-"use client";
-
-import { ToastContainer } from "react-toastify";
+import { VnToast } from "../_components/toast";
 import { VnBreadCrumb } from "../_components/ui";
 import { Header, Sidebar } from "./_components";
 
@@ -20,7 +18,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
           {children}
         </div>
       </div>
-      <ToastContainer position="top-center" />
+      <VnToast />
     </div>
   );
 }

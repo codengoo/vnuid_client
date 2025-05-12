@@ -10,6 +10,7 @@
     "postinstall": "flowbite-react patch"
   },
   "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^4.6.2",
     "apexcharts": "^4.7.0",
     "axios": "^1.9.0",
     "classnames": "^2.5.1",

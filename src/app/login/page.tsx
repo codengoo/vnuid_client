@@ -1,11 +1,48 @@
 "use client";
 
+import { login } from "@/helpers/login";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { IoLogoGoogle } from "react-icons/io";
 import { LuLock, LuMail } from "react-icons/lu";
+import { toast } from "react-toastify";
+import { VnToast } from "../_components";
 import { LangButton, VnButton, VnInput } from "../_components/ui";
 
 export default function LoginPage() {
+  const { push } = useRouter();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setLoading] = useState(false);
+  const handleChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+
+  const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleLogin();
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+      await login(username, password);
+      toast.success("Login thành công");
+      push("/lesson");
+    } catch (error) {
+      toast.error((error as Error).message);
+      setPassword("")
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="bg-primary w-screen h-screen overflow-hidden flex justify-center items-center">
       <div className="w-1/2 h-2/3 bg-white rounded-3xl shadow-2xl flex">
@@ -32,6 +69,8 @@ export default function LoginPage() {
                     icon={LuMail}
                     type="text"
                     placeholder="Enter username"
+                    value={username}
+                    onChange={handleChangeUsername}
                   />
                   <VnInput
                     id="password"
@@ -39,15 +78,25 @@ export default function LoginPage() {
                     icon={LuLock}
                     type="password"
                     placeholder="Enter password"
+                    value={password}
+                    onChange={handleChangePassword}
+                    onKeyUp={handleKeyPress}
                   />
                 </div>
 
-                <VnButton id="login" fullSized label="Login" />
+                <VnButton
+                  id="login"
+                  fullSized
+                  label="Login"
+                  onClick={handleLogin}
+                />
               </div>
             </div>
 
             <div className="space-y-2">
-              <p className="text-center text-sm font-semibold text-gray-800">OR</p>
+              <p className="text-center text-sm font-semibold text-gray-800">
+                OR
+              </p>
 
               <VnButton
                 id="login_by_google"
@@ -71,6 +120,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      <VnToast />
     </main>
   );
 }

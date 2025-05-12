@@ -1,3 +1,5 @@
+"use client";
+
 import { VnLogo } from "@/app/_components";
 import { VnAvatar } from "@/app/_components/avatar";
 import { VnIconButton } from "@/app/_components/ui";

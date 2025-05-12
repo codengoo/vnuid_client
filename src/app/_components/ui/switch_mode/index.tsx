@@ -1,3 +1,5 @@
+"use client";
+
 import { default as cn } from "classnames";
 import { useState } from "react";
 import { IconType } from "react-icons";

@@ -8,7 +8,7 @@ export function Header() {
         id="search"
         className="w-1/4 bg-red"
         placeholder="Search"
-        rightIcon={LuSearch}
+        // rightIcon={<LuSearch/}
       />
     </div>
   );

@@ -1,3 +1,5 @@
+"use client";
+
 import { Label, TextInput, TextInputProps } from "flowbite-react";
 import React, { ForwardedRef, useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
@@ -7,6 +9,7 @@ interface IVnInput extends TextInputProps {
   id: string;
   className?: string;
 }
+
 export const VnInput = React.forwardRef(function (
   { label, id, type, className, rightIcon, ...props }: IVnInput,
   ref: ForwardedRef<HTMLInputElement>,
@@ -16,9 +19,8 @@ export const VnInput = React.forwardRef(function (
     setIsVisible((prev) => !prev);
   };
 
-  // Only show the eye icons for password fields
   const renderRightIcon = () => {
-    if (type !== "password") return undefined;
+    if (type !== "password") return null;
 
     return isVisible ? (
       <LuEye className="cursor-pointer" onClick={toggleVisibility} />
