@@ -39,3 +39,8 @@ export interface ISession {
   subjectId: string;
   subject: ISubject;
 }
+
+export type IStudent = {
+  student: IUser;
+  checkins: ISession[];
+};

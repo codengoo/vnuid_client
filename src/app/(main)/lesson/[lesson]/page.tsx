@@ -4,7 +4,7 @@ import { StudentCard } from "@/app/_components";
 import { VnButton, VnChip } from "@/app/_components/ui";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
 import { getSubjectDetails } from "@/helpers/subject";
-import { SessionModal } from "@/modal";
+import { SessionModal, StudentInfoModal } from "@/modal";
 import { ISession, ISubject } from "@/types";
 import { ApexOptions } from "apexcharts";
 import { useParams } from "next/navigation";
@@ -19,7 +19,8 @@ export default function LessonDetail() {
   const [isOpenPopup, setOpenPopup] = useState<boolean>(false);
   const [isOpenEditPopup, setOpenEditPopup] = useState<boolean>(false);
   const [sessionData, setSessionData] = useState<ISession>();
-
+  const [isOpenDrawer, setOpenDrawer] = useState<boolean>(false);
+  const [studentId, setStudentId] = useState<string | null>(null);
   const options: ApexOptions = {
     chart: {
       type: "area",
@@ -82,6 +83,11 @@ export default function LessonDetail() {
 
   const handleOpenPopup = () => {
     setOpenPopup(true);
+  };
+
+  const handleOpenStudentInfo = async (studentId: string) => {
+    setStudentId(studentId);
+    setOpenDrawer(true);
   };
 
   const handleEditSession = (id: string) => {
@@ -190,10 +196,21 @@ export default function LessonDetail() {
 
         <div className="grid grid-cols-5 gap-4">
           {subjectDetail.students.map((student) => (
-            <StudentCard student={student} key={student.id} />
+            <StudentCard
+              student={student}
+              key={student.id}
+              onClick={() => handleOpenStudentInfo(student.id)}
+            />
           ))}
         </div>
       </div>
+
+      <StudentInfoModal
+        isOpen={isOpenDrawer}
+        setOpen={setOpenDrawer}
+        studentID={studentId!}
+        subjectID={subjectDetail.id}
+      />
     </MainContentInfo>
   );
 }

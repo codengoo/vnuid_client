@@ -5,10 +5,16 @@ import { Avatar } from "flowbite-react";
 interface IStudentCardProps {
   student: IUser;
   style?: "normal" | "highlight";
+  onClick?: () => void;
 }
-export function StudentCard({ student, style = "normal" }: IStudentCardProps) {
+export function StudentCard({
+  student,
+  style = "normal",
+  onClick,
+}: IStudentCardProps) {
   return (
     <div
+      onClick={onClick}
       className={cn(
         "flex gap-4 hover:bg-gray-100 rounded-lg p-2 border border-transparent hover:!border-gray-300 border-dashed cursor-pointer",
         { "bg-gray-50": style === "highlight" },

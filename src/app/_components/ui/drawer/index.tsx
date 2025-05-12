@@ -5,8 +5,14 @@ interface IVnDrawerProps {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   children?: ReactNode[] | ReactNode;
+  title?: string;
 }
-export function VnDrawer({ isOpen, setIsOpen, children }: IVnDrawerProps) {
+export function VnDrawer({
+  isOpen,
+  setIsOpen,
+  children,
+  title = "Danh sách sinh viên",
+}: IVnDrawerProps) {
   return (
     <Drawer
       open={isOpen}
@@ -18,13 +24,13 @@ export function VnDrawer({ isOpen, setIsOpen, children }: IVnDrawerProps) {
           base: "rounded-2xl h-auto mb-0",
           position: {
             right: {
-              on: "right-5 top-5 bottom-5",
+              on: "right-5 top-5 bottom-5 w-96",
             },
           },
         },
       }}
     >
-      <DrawerHeader title="Danh sách sinh viên" />
+      <DrawerHeader title={title} />
       <DrawerItems style={{}}>{children}</DrawerItems>
     </Drawer>
   );
