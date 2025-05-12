@@ -1,4 +1,4 @@
-import { Modal, ModalBody } from "flowbite-react";
+import { Modal, ModalBody, ModalHeader } from "flowbite-react";
 import { Dispatch, KeyboardEvent, SetStateAction } from "react";
 
 interface IVnPopupProps {
@@ -7,6 +7,7 @@ interface IVnPopupProps {
   children?: React.ReactNode[] | React.ReactNode;
   title?: string;
   leftTitleComponent?: React.ReactNode;
+  hasCloseButton?: boolean;
 }
 export function VnPopup({
   openModal,
@@ -14,6 +15,7 @@ export function VnPopup({
   children,
   title,
   leftTitleComponent,
+  hasCloseButton,
 }: IVnPopupProps) {
   const handleKeyEsc = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
@@ -26,12 +28,23 @@ export function VnPopup({
       show={openModal}
       size="xl"
       onClose={() => setOpenModal(false)}
-      theme={{ content: { inner: "rounded-xl" }, body: { base: "p-4" } }}
+      theme={{
+        content: { inner: "rounded-xl" },
+        body: { base: "p-4" },
+        header: { base: "border-0" },
+      }}
       onKeyUp={handleKeyEsc}
     >
-      {/* <ModalHeader /> */}
+      {hasCloseButton && (
+        <ModalHeader>
+          {title && (
+            <h1 className="text-xl font-medium text-gray-700">{title}</h1>
+          )}
+        </ModalHeader>
+      )}
+
       <ModalBody className="space-y-4">
-        {title && (
+        {!hasCloseButton && title && (
           <div className="flex justify-between items-center">
             <h1 className="text-xl font-medium text-gray-700">{title}</h1>
             {leftTitleComponent}

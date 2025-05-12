@@ -1,30 +1,43 @@
+import { logout } from "@/helpers/login";
+import { ProfileModal } from "@/modal";
 import { Avatar, Tooltip } from "flowbite-react";
-import { IconType } from "react-icons";
+import { useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
 import { LuChevronRight, LuCircleUser, LuLogOut } from "react-icons/lu";
-import { VnIconButton } from "../ui";
-
-interface IButtonItemProps {
-  icon?: IconType;
-  label: string;
-}
-const ButtonItem = ({ icon: Icon, label }: IButtonItemProps) => {
-  return (
-    <button className="hover:bg-gray-200 w-full p-2 cursor-pointer rounded-md text-gray-500 flex justify-start gap-2 hover:text-gray-700">
-      {Icon && <Icon size={18} />}
-      <span>{label}</span>
-    </button>
-  );
-};
+import { toast } from "react-toastify";
+import { VnIconButton, VnMenu } from "../ui";
+import { IMenuItemProps } from "../ui/menu/menu_item";
+import { useAuth } from "@/contexts";
 
 export function VnAvatar() {
-  const Menu = () => {
-    return (
-      <div className="w-fit min-w-[150px] flex flex-col">
-        <ButtonItem icon={LuLogOut} label="Logout" />
-        <ButtonItem icon={LuCircleUser} label="Profile" />
-      </div>
-    );
+  const { replace } = useRouter();
+  const {user} = useAuth()
+  const [isShowProfileModal, setShowProfileModal] = useState(false);
+  const handleLogout = async () => {
+    try {
+      await logout();
+      replace("/login");
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
   };
+
+  const menuData = useMemo(
+    () =>
+      [
+        {
+          label: "Logout",
+          onClick: handleLogout,
+          icon: LuLogOut,
+        },
+        {
+          label: "Profile",
+          icon: LuCircleUser,
+          onClick: () => setShowProfileModal(true),
+        },
+      ] as IMenuItemProps[],
+    [],
+  );
 
   return (
     <div className="flex items-center gap-4">
@@ -38,14 +51,20 @@ export function VnAvatar() {
 
       <div className="flex grow">
         <div className="w-full">
-          <p className="font-semibold text-gray-800">Nguyen Van A</p>
+          <p className="font-semibold text-gray-800">{user?.name}</p>
           <p className="text-xs text-gray-600">Teacher</p>
         </div>
 
-        <Tooltip content={<Menu />} style="light" animation="duration-300">
+        <Tooltip
+          content={<VnMenu menu={menuData} />}
+          style="light"
+          animation="duration-300"
+        >
           <VnIconButton icon={LuChevronRight} />
         </Tooltip>
       </div>
+
+      <ProfileModal isOpen={isShowProfileModal} setOpen={setShowProfileModal} />
     </div>
   );
 }

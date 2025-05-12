@@ -4,9 +4,9 @@ const token =
 
 export const fetcher = axios.create({
   baseURL: "http://localhost:1234",
-  headers: {
-    // Authorization: "Bearer " + localStorage.getItem("token"),
-    Authorization: "Bearer " + token,
-  },
-  // withCredentials: true,
+  // headers: {
+  //   // Authorization: "Bearer " + localStorage.getItem("token"),
+  //   Authorization: "Bearer " + token,
+  // },
+  withCredentials: true,
 });

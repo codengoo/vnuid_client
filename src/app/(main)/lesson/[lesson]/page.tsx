@@ -7,17 +7,14 @@ import { getSubjectDetails } from "@/helpers/subject";
 import { SessionModal } from "@/modal";
 import { ISession, ISubject } from "@/types";
 import { ApexOptions } from "apexcharts";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { LuPlus } from "react-icons/lu";
 import { InfoBox, LessonInfo, TeacherBox } from "./_components";
 import AttendanceBox from "./_components/attendance-box";
-export default function LessonDetail({
-  params,
-}: {
-  params: { lesson: string };
-}) {
-  const { lesson } = params;
+export default function LessonDetail() {
+  const { lesson } = useParams<{ lesson: string }>();
   const [subjectDetail, setSubjectDetail] = useState<ISubject | null>(null);
   const [isOpenPopup, setOpenPopup] = useState<boolean>(false);
   const [isOpenEditPopup, setOpenEditPopup] = useState<boolean>(false);
@@ -87,12 +84,12 @@ export default function LessonDetail({
     setOpenPopup(true);
   };
 
-  const handleEditSession = (id: string) =>{
+  const handleEditSession = (id: string) => {
     const data = subjectDetail?.session.find((session) => session.id === id);
     if (!data) return;
     setSessionData(data);
     setOpenEditPopup(true);
-  }
+  };
 
   const prepare = async () => {
     const subject = await getSubjectDetails(lesson as string);
@@ -156,7 +153,11 @@ export default function LessonDetail({
 
         <div className="grid grid-cols-4 gap-4">
           {subjectDetail.session.map((session) => (
-            <AttendanceBox key={session.id} session={session} onClick={()=>handleEditSession(session.id)}/>
+            <AttendanceBox
+              key={session.id}
+              session={session}
+              onClick={() => handleEditSession(session.id)}
+            />
           ))}
         </div>
 
