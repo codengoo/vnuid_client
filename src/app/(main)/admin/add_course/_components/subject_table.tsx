@@ -1,20 +1,28 @@
 import { ITableColumn, VnInput, VnTable } from "@/app/_components/ui";
 import { ICourse } from "@/types";
+import { formatDateTime } from "@/utils";
 import { useMemo } from "react";
 import { LuSearch } from "react-icons/lu";
 
 interface ISubjectTableProps {
-  subjects: ICourse[];
+  courses: ICourse[];
   onRowClick: (subject: ICourse) => void;
 }
 
-export function SubjectTable({ onRowClick, subjects }: ISubjectTableProps) {
+export function CourseTable({
+  onRowClick,
+  courses: subjects,
+}: ISubjectTableProps) {
   const columns = useMemo(() => {
     return [
       { label: "STT", value: "index", render: (value) => value },
       { label: "Name", value: "name", render: (value) => value },
       { label: "Mã", value: "code", render: (value) => value },
-      { label: "Ngày bắt đầu", value: "start_date", render: (value) => value },
+      {
+        label: "Ngày bắt đầu",
+        value: "start_time",
+        render: (value) => formatDateTime(value as string),
+      },
     ] as ITableColumn<ICourse>[];
   }, []);
 

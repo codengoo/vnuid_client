@@ -8,11 +8,12 @@ import {
   VnInputSuggest,
   VnTextArea,
 } from "@/app/_components/ui";
-import { getUsersAsAdmin } from "@/helpers/admin";
-import { ICourse, IUser } from "@/types";
-import { formatDateTime } from "@/utils";
+import { addCourse, getUsersAsAdmin } from "@/helpers/admin";
+import { ICourse, IExtraUser, IUserType } from "@/types";
+import { formatDateTimeForInput } from "@/utils";
 import { removeVietnameseTones } from "@/utils/text";
 import { ChangeEvent, useEffect, useState } from "react";
+import { LuSearch } from "react-icons/lu";
 import { toast } from "react-toastify";
 
 type IViewMode = "create" | "view";
@@ -23,22 +24,23 @@ interface ISubjectInfoProps {
   onChange?: () => void;
 }
 
-export function SubjectInfo({
+export function CourseInfo({
   courses,
   course: outerCourse,
   onChange,
 }: ISubjectInfoProps) {
   const [course, setCourse] = useState<ICourse | null>(null);
+  const [studentIds, setStudentIds] = useState<string[]>([]);
   const [mode, setMode] = useState<IViewMode>("view");
   const [isLoading, setLoading] = useState(false);
-  const [users, setUsers] = useState<IUser[]>([]);
+  const [users, setUsers] = useState<IExtraUser[]>([]);
 
   const handleSave = async () => {
     if (!course) return;
     try {
       setLoading(true);
-      // await AddCourse(course);
-      console.log(course);
+      console.log(course, studentIds);
+      await addCourse(course, studentIds);
 
       toast.success("Thêm khóa học thành công");
       setCourse(null);
@@ -94,6 +96,11 @@ export function SubjectInfo({
     });
   };
 
+  const handleAddStudent = (value: string) => {
+    if (studentIds.includes(value)) return;
+    setStudentIds([...studentIds, value]);
+  };
+
   const preload = async () => {
     try {
       setLoading(true);
@@ -107,37 +114,43 @@ export function SubjectInfo({
   };
 
   const changeToCreateMode = () => {
-    setCourse(null);
+    // @ts-ignore
+    setCourse({
+      end_time: new Date().toISOString(),
+      start_time: new Date().toISOString(),
+    });
+    setStudentIds([]);
     setMode("create");
   };
 
-  const findUserDataComponent = (
-    search: string,
-    handleSelect: (value: string) => void,
-  ) => {
-    const filteredUsers = users.filter((user) => {
-      const text = removeVietnameseTones(search.toLocaleLowerCase());
-      const name = removeVietnameseTones(user.name.toLocaleLowerCase());
+  const renderFindUserFn = (type: IUserType) => {
+    return (search: string, handleSelect: (value: string) => void) => {
+      const filteredUsers = users.filter((user) => {
+        const text = removeVietnameseTones(search.toLocaleLowerCase());
+        const name = removeVietnameseTones(user.name.toLocaleLowerCase());
 
-      return (
-        name.includes(text) ||
-        user.sid.includes(search) ||
-        user.email.includes(search) ||
-        user.id === search
-      );
-    });
+        return (
+          user.type === type &&
+          (name.includes(text) ||
+            user.sid.includes(search) ||
+            user.email.includes(search) ||
+            user.id === search)
+        );
+      });
 
-    return filteredUsers.map<ItemSuggest>((user) => ({
-      value: user.id,
-      components: () => (
-        <StudentCard student={user} onClick={() => handleSelect(user.id)} />
-      ),
-    }));
+      return filteredUsers.map<ItemSuggest>((user) => ({
+        value: user.id,
+        components: () => (
+          <StudentCard student={user} onClick={() => handleSelect(user.id)} />
+        ),
+      }));
+    };
   };
 
   useEffect(() => {
     preload();
     setCourse(outerCourse);
+    setStudentIds(outerCourse?.students.map((s) => s.id) || []);
     setMode("view");
   }, [outerCourse]);
 
@@ -201,7 +214,7 @@ export function SubjectInfo({
         <VnInput
           id="start_time"
           label="Thời gian bắt đầu"
-          value={formatDateTime(course?.start_time) || ""}
+          value={formatDateTimeForInput(course?.start_time) || ""}
           onChange={(e) => handleChange(e, "start_time")}
           disabled={mode === "view"}
           type="datetime-local"
@@ -210,7 +223,7 @@ export function SubjectInfo({
         <VnInput
           id="end_time"
           label="Thời gian kết thúc"
-          value={formatDateTime(course?.end_time) || ""}
+          value={formatDateTimeForInput(course?.end_time) || ""}
           onChange={(e) => handleChange(e, "end_time")}
           disabled={mode === "view"}
           type="datetime-local"
@@ -227,7 +240,7 @@ export function SubjectInfo({
         <VnInputSuggest
           id="teacher_id"
           label="Giáo viên"
-          filterFn={findUserDataComponent}
+          filterFn={renderFindUserFn("teacher")}
           value={course?.teacher_id || ""}
           onChange={(val) => handleChangeValue(val, "teacher_id")}
           disabled={mode === "view"}
@@ -237,7 +250,29 @@ export function SubjectInfo({
       <h1 className="text-sm font-medium text-gray-800 mt-5">
         Danh sách sinh viên
       </h1>
-      <div className="col-span-4">// StudentCard</div>
+
+      <VnInputSuggest
+        id="student_list"
+        filterFn={renderFindUserFn("student")}
+        onChange={(val) => handleAddStudent(val)}
+        disabled={mode === "view"}
+        icon={LuSearch}
+      />
+
+      <div className="col-span-4 grid grid-cols-3 gap-4 py-4">
+        {studentIds.map((studentId) => {
+          const student = users.find((user) => user.id === studentId);
+          if (!student) return null;
+
+          return (
+            <StudentCard
+              key={studentId}
+              student={student}
+              // onClick={() => handleRemoveStudent(student)}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }

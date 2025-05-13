@@ -20,7 +20,7 @@ interface IVnSuggestInput extends Omit<IVnInput, "value" | "onChange"> {
 
 export function VnInputSuggest({
   onChange,
-  value,
+  value = "",
   filterFn,
   ...props
 }: IVnSuggestInput) {

@@ -1,3 +1,5 @@
+export type IUserType = "admin" | "student" | "teacher"
+
 export interface IUser {
   id: string;
   sid: string;
@@ -13,7 +15,7 @@ export interface IUser {
 export interface IExtraUser extends IUser {
   gid: string;
   password: string;
-  type: string;
+  type: IUserType;
 }
 
 export interface ICourse {
