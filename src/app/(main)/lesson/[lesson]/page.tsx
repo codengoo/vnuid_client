@@ -5,7 +5,7 @@ import { VnButton, VnChip } from "@/app/_components/ui";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
 import { getSubjectDetails } from "@/helpers/subject";
 import { ExportModal, SessionModal, StudentInfoModal } from "@/modal";
-import { ISession, ISubject } from "@/types";
+import { ISession, ICourse } from "@/types";
 import { ApexOptions } from "apexcharts";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ import { InfoBox, LessonInfo, TeacherBox } from "./_components";
 import AttendanceBox from "./_components/attendance-box";
 export default function LessonDetail() {
   const { lesson } = useParams<{ lesson: string }>();
-  const [subjectDetail, setSubjectDetail] = useState<ISubject | null>(null);
+  const [subjectDetail, setSubjectDetail] = useState<ICourse | null>(null);
   const [isOpenPopup, setOpenPopup] = useState<boolean>(false);
   const [isOpenEditPopup, setOpenEditPopup] = useState<boolean>(false);
   const [sessionData, setSessionData] = useState<ISession>();

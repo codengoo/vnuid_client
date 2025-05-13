@@ -18,3 +18,13 @@ export function formatCurrentDate() {
 export function formatTime(date: Date | string = new Date()) {
   return format(date, "HH:mm");
 }
+
+export function formatDateTime(date: Date | string = new Date()) {
+  try {
+    const datetime = new Date(date);
+    const result = format(datetime, "yyyy-MM-dd'T'hh:mm");
+    return result;
+  } catch (error) {
+    return null;
+  }
+}

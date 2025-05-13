@@ -5,14 +5,14 @@ import { VnInput, VnSwitchMode } from "@/app/_components/ui";
 import { VnDrawer } from "@/app/_components/ui/drawer";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
 import { getSubjectDetails, getSubjects } from "@/helpers/subject";
-import { ISubject } from "@/types";
+import { ICourse } from "@/types";
 import { formatCurrentDate } from "@/utils";
 import { useEffect, useState } from "react";
 import { LuClock, LuClockAlert, LuSearch } from "react-icons/lu";
 
 export default function Lesson() {
-  const [subjects, setSubjects] = useState<ISubject[]>([]);
-  const [subjectDetail, setSubjectDetail] = useState<ISubject | null>(null);
+  const [subjects, setSubjects] = useState<ICourse[]>([]);
+  const [subjectDetail, setSubjectDetail] = useState<ICourse | null>(null);
   const [isOpenDrawer, setOpenDrawer] = useState(false);
   const prepare = async () => {
     const subjects = await getSubjects();

@@ -4,7 +4,7 @@ import { HelperText, Label, TextInput, TextInputProps } from "flowbite-react";
 import React, { ForwardedRef, useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 
-interface IVnInput extends TextInputProps {
+export interface IVnInput extends TextInputProps {
   label?: string;
   id: string;
   className?: string;
@@ -52,7 +52,7 @@ export const VnInput = React.forwardRef(function (
             },
             input: {
               colors: {
-                gray: "border-gray-300 bg-gray-50 placeholder-gray-500 focus:border-tertiary focus:ring-tertiary font-prompt font-medium text-gray-600",
+                gray: "placeholder-gray-500 focus:border-tertiary focus:ring-tertiary font-prompt font-medium text-gray-600",
               },
             },
           },

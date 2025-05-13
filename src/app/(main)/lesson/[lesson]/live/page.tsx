@@ -3,7 +3,7 @@
 import { VnChip, VnTable } from "@/app/_components/ui";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
 import { getSubjectDetails } from "@/helpers/subject";
-import { ISubject } from "@/types";
+import { ICourse } from "@/types";
 import { Avatar } from "flowbite-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -11,7 +11,7 @@ import { LessonInfo } from "../_components";
 
 export default function Live() {
   const { lesson } = useParams<{ lesson: string }>();
-  const [subjectDetail, setSubjectDetail] = useState<ISubject | null>(null);
+  const [subjectDetail, setSubjectDetail] = useState<ICourse | null>(null);
   const prepare = async () => {
     const subject = await getSubjectDetails(lesson as string);
     console.log(subject);
@@ -24,7 +24,7 @@ export default function Live() {
   return (
     <MainContentInfo>
       <HeaderContentInfo>
-        <LessonInfo subject={subjectDetail as ISubject} />
+        <LessonInfo subject={subjectDetail as ICourse} />
       </HeaderContentInfo>
 
       <div>

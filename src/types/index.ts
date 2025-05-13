@@ -16,7 +16,7 @@ export interface IExtraUser extends IUser {
   type: string;
 }
 
-export interface ISubject {
+export interface ICourse {
   id: string;
   name: string;
   code: string;
@@ -43,7 +43,7 @@ export interface ISession {
   duration: number;
   repeat: string;
   subjectId: string;
-  subject: ISubject;
+  subject: ICourse;
 }
 
 export type IStudent = {

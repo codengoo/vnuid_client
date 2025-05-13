@@ -2,7 +2,7 @@ import { VnEditable } from "@/app/_components";
 import { VnButton, VnConfirm, VnPopup, VnSwitch } from "@/app/_components/ui";
 import { AddSessionDefaultValue } from "@/data";
 import { addSession, deleteSession, updateSession } from "@/helpers/subject";
-import { ISession, ISubject } from "@/types";
+import { ISession, ICourse } from "@/types";
 import { formatTime } from "@/utils";
 import { useEffect, useState } from "react";
 import { LuCalendarClock, LuHourglass, LuSchool } from "react-icons/lu";
@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 interface ISessionModalProps {
   isOpenPopup: boolean;
   setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
-  subject: ISubject;
+  subject: ICourse;
   onSuccess: () => {};
   mode: "create" | "view";
   sessionData?: ISession;

@@ -29,7 +29,7 @@ export function Sidebar() {
           <Tab icon={LuPresentation} label="Lesson" url="/lesson" />
           <Tab icon={LuClock} label="History" url="/history" />
           <Tab icon={LuUsers} label="Add users" url="/admin/add_user" />
-          <Tab icon={LuBook} label="Add subject" url="/admin/add_subject" />
+          <Tab icon={LuBook} label="Add courses" url="/admin/add_course" />
         </div>
 
         <div className="space-y-2">

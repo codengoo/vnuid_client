@@ -1,4 +1,4 @@
-import { IStudent, ISubject } from "../../types";
+import { IStudent, ICourse } from "../../types";
 import { fetcher } from "../network/axios";
 
 export async function getStudentInfo(

@@ -1,10 +1,10 @@
 import { VnIconButton } from "@/app/_components/ui";
-import { ISubject } from "@/types";
+import { ICourse } from "@/types";
 import { formatCurrentDate } from "@/utils";
 import { LuFileDown, LuQrCode } from "react-icons/lu";
 
 interface LessonInfoProps {
-  subject: ISubject;
+  subject: ICourse;
   onExport?: () => void;
 }
 export function LessonInfo({ subject, onExport }: LessonInfoProps) {
