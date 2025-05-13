@@ -13,7 +13,7 @@ interface ISessionModalProps {
   setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
   subject: ISubject;
   onSuccess: () => {};
-  mode: "create" | "update";
+  mode: "create" | "view";
   sessionData?: ISession;
 }
 
@@ -116,7 +116,7 @@ export function SessionModal({
   };
 
   useEffect(() => {
-    if (mode === "update" && sessionData) {
+    if (mode === "view" && sessionData) {
       setNewSession(sessionData);
     } else {
       setNewSession({
@@ -133,7 +133,7 @@ export function SessionModal({
       title="Cài đặt phiên điểm danh"
       leftTitleComponent={
         <div className="flex gap-2">
-          {mode === "update" && (
+          {mode === "view" && (
             <VnButton
               label="Xóa"
               color="red"

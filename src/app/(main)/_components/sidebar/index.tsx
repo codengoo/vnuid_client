@@ -4,12 +4,14 @@ import { VnLogo } from "@/app/_components";
 import { VnAvatar } from "@/app/_components/avatar";
 import { VnIconButton } from "@/app/_components/ui";
 import {
+  LuBook,
   LuChevronsRightLeft,
   LuClock,
   LuHouse,
   LuLifeBuoy,
   LuPresentation,
   LuSettings,
+  LuUsers,
 } from "react-icons/lu";
 import { Tab } from "../tab";
 
@@ -26,6 +28,8 @@ export function Sidebar() {
           <Tab icon={LuHouse} label="Home" url="/dashboard" />
           <Tab icon={LuPresentation} label="Lesson" url="/lesson" />
           <Tab icon={LuClock} label="History" url="/history" />
+          <Tab icon={LuUsers} label="Add users" url="/admin/add_user" />
+          <Tab icon={LuBook} label="Add subject" url="/admin/add_subject" />
         </div>
 
         <div className="space-y-2">

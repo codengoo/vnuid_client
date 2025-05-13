@@ -12,13 +12,26 @@ import { ReactNode } from "react";
 import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
 import { VnDropdown } from "../dropdown";
 import { VnIconButton } from "../icon_button";
-interface IVnTableProps {
-  columns: string[];
-  columnRatios?: number[];
-  values: ReactNode[][];
+
+export interface ITableColumn<T extends { id: string }> {
+  label: string;
+  value: keyof T | "index";
+  render: (value: T[keyof T]) => ReactNode;
 }
 
-export function VnTable({ columns, values, columnRatios = [] }: IVnTableProps) {
+interface IVnTableProps<T extends { id: string }> {
+  columns: ITableColumn<T>[];
+  columnRatios?: number[];
+  values: T[];
+  onRowClick?: (id: string) => void;
+}
+
+export function VnTable<T extends { id: string }>({
+  columns,
+  values,
+  columnRatios = [],
+  onRowClick,
+}: IVnTableProps<T>) {
   const total = columnRatios.reduce((sum, val) => sum + val, 0);
 
   return (
@@ -39,10 +52,10 @@ export function VnTable({ columns, values, columnRatios = [] }: IVnTableProps) {
             <TableRow>
               {columns.map((column, idx) => (
                 <TableHeadCell
-                  key={column}
+                  key={column.value.toString()}
                   style={{ width: `${(columnRatios[idx] / total) * 100}%` }}
                 >
-                  {column}
+                  {column.label}
                 </TableHeadCell>
               ))}
             </TableRow>
@@ -51,10 +64,11 @@ export function VnTable({ columns, values, columnRatios = [] }: IVnTableProps) {
           <TableBody className="divide-y divide-gray-300">
             {values.map((value, idx) => (
               <TableRow
+                onClick={() => onRowClick?.(value.id)}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
                 key={"tb_row_" + idx}
               >
-                {value.map((item, idx2) => (
+                {columns.map((column, idx2) => (
                   <TableCell
                     key={"index_" + idx2}
                     style={{ width: `${(columnRatios[idx2] / total) * 100}%` }}
@@ -65,7 +79,9 @@ export function VnTable({ columns, values, columnRatios = [] }: IVnTableProps) {
                       },
                     )}
                   >
-                    {item}
+                    {column.value === "index"
+                      ? idx + 1
+                      : column.render(value[column.value])}
                   </TableCell>
                 ))}
               </TableRow>

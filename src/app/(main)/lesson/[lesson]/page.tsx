@@ -4,7 +4,7 @@ import { StudentCard } from "@/app/_components";
 import { VnButton, VnChip } from "@/app/_components/ui";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
 import { getSubjectDetails } from "@/helpers/subject";
-import { SessionModal, StudentInfoModal } from "@/modal";
+import { ExportModal, SessionModal, StudentInfoModal } from "@/modal";
 import { ISession, ISubject } from "@/types";
 import { ApexOptions } from "apexcharts";
 import { useParams } from "next/navigation";
@@ -20,6 +20,7 @@ export default function LessonDetail() {
   const [isOpenEditPopup, setOpenEditPopup] = useState<boolean>(false);
   const [sessionData, setSessionData] = useState<ISession>();
   const [isOpenDrawer, setOpenDrawer] = useState<boolean>(false);
+  const [isOpenExportModal, setOpenExportModal] = useState<boolean>(false);
   const [studentId, setStudentId] = useState<string | null>(null);
   const options: ApexOptions = {
     chart: {
@@ -90,6 +91,10 @@ export default function LessonDetail() {
     setOpenDrawer(true);
   };
 
+  const handleOpenExportModal = () => {
+    setOpenExportModal(true);
+  };
+
   const handleEditSession = (id: string) => {
     const data = subjectDetail?.session.find((session) => session.id === id);
     if (!data) return;
@@ -112,7 +117,7 @@ export default function LessonDetail() {
   return (
     <MainContentInfo>
       <HeaderContentInfo>
-        <LessonInfo subject={subjectDetail} />
+        <LessonInfo subject={subjectDetail} onExport={handleOpenExportModal} />
         <div className="flex gap-4">
           <div className="w-1/3 space-y-4 flex-none">
             <TeacherBox teacher={subjectDetail.teacher} />
@@ -166,23 +171,6 @@ export default function LessonDetail() {
             />
           ))}
         </div>
-
-        <SessionModal
-          isOpenPopup={isOpenPopup}
-          setOpenPopup={setOpenPopup}
-          subject={subjectDetail}
-          onSuccess={prepare}
-          mode="create"
-        />
-
-        <SessionModal
-          isOpenPopup={isOpenEditPopup}
-          setOpenPopup={setOpenEditPopup}
-          subject={subjectDetail}
-          onSuccess={prepare}
-          mode="update"
-          sessionData={sessionData}
-        />
       </div>
 
       <div className="space-y-4">
@@ -205,10 +193,33 @@ export default function LessonDetail() {
         </div>
       </div>
 
+      <SessionModal
+        isOpenPopup={isOpenPopup}
+        setOpenPopup={setOpenPopup}
+        subject={subjectDetail}
+        onSuccess={prepare}
+        mode="create"
+      />
+
+      <SessionModal
+        isOpenPopup={isOpenEditPopup}
+        setOpenPopup={setOpenEditPopup}
+        subject={subjectDetail}
+        onSuccess={prepare}
+        mode="view"
+        sessionData={sessionData}
+      />
+
       <StudentInfoModal
         isOpen={isOpenDrawer}
         setOpen={setOpenDrawer}
         studentID={studentId!}
+        subjectID={subjectDetail.id}
+      />
+
+      <ExportModal
+        isOpen={isOpenExportModal}
+        setOpen={setOpenExportModal}
         subjectID={subjectDetail.id}
       />
     </MainContentInfo>

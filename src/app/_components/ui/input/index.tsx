@@ -1,6 +1,6 @@
 "use client";
 
-import { Label, TextInput, TextInputProps } from "flowbite-react";
+import { HelperText, Label, TextInput, TextInputProps } from "flowbite-react";
 import React, { ForwardedRef, useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 
@@ -8,10 +8,11 @@ interface IVnInput extends TextInputProps {
   label?: string;
   id: string;
   className?: string;
+  helpText?: string;
 }
 
 export const VnInput = React.forwardRef(function (
-  { label, id, type, className, rightIcon, ...props }: IVnInput,
+  { label, id, type, className, rightIcon, helpText, ...props }: IVnInput,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const [isVisible, setIsVisible] = useState(false);
@@ -40,6 +41,7 @@ export const VnInput = React.forwardRef(function (
         ref={ref}
         id={id}
         name={id}
+        color={helpText ? "failure" : void 0}
         {...props}
         type={type === "password" ? (isVisible ? "text" : "password") : type}
         rightIcon={rightIcon ? rightIcon : () => renderRightIcon()}
@@ -56,6 +58,12 @@ export const VnInput = React.forwardRef(function (
           },
         }}
       />
+
+      {helpText && (
+        <HelperText>
+          <span className="font-medium text-sm">{helpText}</span>
+        </HelperText>
+      )}
     </div>
   );
 });

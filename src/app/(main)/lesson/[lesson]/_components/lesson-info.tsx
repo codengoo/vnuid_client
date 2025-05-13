@@ -5,8 +5,9 @@ import { LuFileDown, LuQrCode } from "react-icons/lu";
 
 interface LessonInfoProps {
   subject: ISubject;
+  onExport?: () => void;
 }
-export function LessonInfo({ subject }: LessonInfoProps) {
+export function LessonInfo({ subject, onExport }: LessonInfoProps) {
   return (
     <div className="flex items-start justify-between">
       <div>
@@ -22,7 +23,7 @@ export function LessonInfo({ subject }: LessonInfoProps) {
         <h3 className="text-gray-500 font-medium">{subject.address}</h3>
       </div>
       <div>
-        <VnIconButton icon={LuFileDown} />
+        <VnIconButton icon={LuFileDown} onClick={onExport}/>
         <VnIconButton icon={LuQrCode} />
       </div>
     </div>

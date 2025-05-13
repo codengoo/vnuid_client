@@ -10,6 +10,12 @@ export interface IUser {
   department: string;
 }
 
+export interface IExtraUser extends IUser {
+  gid: string;
+  password: string;
+  type: string;
+}
+
 export interface ISubject {
   id: string;
   name: string;
