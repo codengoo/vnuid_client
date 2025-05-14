@@ -1,7 +1,7 @@
 import { VnInput } from "@/app/_components/ui";
+import { addWifi, delWifi } from "@/helpers/admin";
 import { IWifi } from "@/types";
 import { useDataForm } from "../../_hooks";
-import { addWifi, delWifi } from "@/helpers/admin";
 
 interface IWifiInfoProps {
   values: IWifi[];
@@ -14,16 +14,14 @@ export function WifiInfo({
   onChange,
   value: outerValue,
 }: IWifiInfoProps) {
-  const { Header, value, handleChange, handleCheck, mode } = useDataForm<
-    IWifi,
-    "mac"
-  >({
-    onAdd: addWifi,
-    onDel: delWifi,
-    onChange,
-    value: outerValue,
-    values: values,
-  });
+  const { Header, value, handleChange, handleCheck, mode, helpTextSet } =
+    useDataForm<IWifi, "mac">({
+      onAdd: addWifi,
+      onDel: delWifi,
+      onChange,
+      value: outerValue,
+      values: values,
+    });
 
   return (
     <div className="bg-gray-50 p-4 rounded-xl border border-gray-300">
@@ -40,11 +38,12 @@ export function WifiInfo({
 
         <VnInput
           id="name"
-          label="Mã MÃ"
+          label="Mã MAC"
           value={value?.mac || ""}
           onChange={(e) => handleChange(e, "mac")}
           onKeyUp={(e) => handleCheck(e, "mac")}
           disabled={mode === "view"}
+          helpText={helpTextSet?.mac}
         />
       </div>
     </div>

@@ -5,7 +5,7 @@ import { IconType } from "react-icons";
 interface IVnIconButtonProps {
   icon: IconType;
   onClick?: () => void;
-  color?: "default" | "primary";
+  color?: "default" | "primary" | "red";
   size?: "xs" | "md";
   className?: string;
 }
@@ -26,11 +26,14 @@ export function VnIconButton({
       onClick={handleClick}
       className={cn(
         "p-2 rounded-md hover:bg-gray-200 cursor-pointer w-fit h-fit",
-        { "text-tertiary hover:bg-secondary": color === "primary" },
+        {
+          "text-tertiary hover:bg-secondary": color === "primary",
+          "text-red-500 hover:bg-red-100": color === "red",
+        },
         className,
       )}
     >
-      {Icon && <Icon size={size === "xs" ? 14 : 18} color="#363636" />}
+      {Icon && <Icon size={size === "xs" ? 14 : 18} />}
     </button>
   );
 }

@@ -141,5 +141,6 @@ export function useDataForm<T extends { id: string }, K extends keyof T>({
     Header,
     handleChange,
     handleCheck,
+    helpTextSet
   };
 }

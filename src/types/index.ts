@@ -1,5 +1,5 @@
 export type IUserType = "admin" | "student" | "teacher";
-
+export type IThreshold = "SMALLER" | "LARGER";
 export interface IUser {
   id: string;
   sid: string;
@@ -68,4 +68,10 @@ export type IRoom = {
   id: string;
   name: string;
   address: string;
-}
+  wifi: {
+    room_id: string;
+    wifi_id: string;
+    type: IThreshold;
+    rssi: number;
+  }[];
+};

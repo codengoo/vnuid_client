@@ -247,31 +247,30 @@ export function CourseInfo({
         />
       </div>
 
-      <h1 className="text-sm font-medium text-gray-800 mt-5">
-        Danh sách sinh viên
-      </h1>
+      <div className="mt-5">
+        <VnInputSuggest
+          label="Danh sách sinh viên"
+          id="student_list"
+          filterFn={renderFindUserFn("student")}
+          onChange={(val) => handleAddStudent(val)}
+          disabled={mode === "view"}
+          icon={LuSearch}
+        />
 
-      <VnInputSuggest
-        id="student_list"
-        filterFn={renderFindUserFn("student")}
-        onChange={(val) => handleAddStudent(val)}
-        disabled={mode === "view"}
-        icon={LuSearch}
-      />
+        <div className="grid grid-cols-3 gap-4 py-4">
+          {studentIds.map((studentId) => {
+            const student = users.find((user) => user.id === studentId);
+            if (!student) return null;
 
-      <div className="col-span-4 grid grid-cols-3 gap-4 py-4">
-        {studentIds.map((studentId) => {
-          const student = users.find((user) => user.id === studentId);
-          if (!student) return null;
-
-          return (
-            <StudentCard
-              key={studentId}
-              student={student}
-              // onClick={() => handleRemoveStudent(student)}
-            />
-          );
-        })}
+            return (
+              <StudentCard
+                key={studentId}
+                student={student}
+                // onClick={() => handleRemoveStudent(student)}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );
