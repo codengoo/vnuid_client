@@ -1,4 +1,4 @@
-import { VnInput } from "@/components/ui";
+import { VnInput } from "@/components";
 import { addWifi, delWifi } from "@/helpers/admin";
 import { IWifi } from "@/types";
 import { useDataForm } from "../../_hooks";

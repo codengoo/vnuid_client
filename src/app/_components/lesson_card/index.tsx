@@ -3,13 +3,12 @@ import { formatTimeRange } from "@/utils";
 import Link from "next/link";
 import { LuUsers } from "react-icons/lu";
 import { VnChip, VnIconButton } from "../../../components/ui";
-import { MouseEvent } from "react";
 
 interface ILessonCardProps {
   subject: ICourse;
   onShowStudents?: () => void;
 }
-export function LessonCard({ subject, onShowStudents }: ILessonCardProps) {
+export function CourseCard({ subject, onShowStudents }: ILessonCardProps) {
   return (
     <Link
       href={"/lesson/" + subject.id}

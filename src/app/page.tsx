@@ -1,3 +1,17 @@
+"use client"
+
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 export default function Home() {
-  return <div className="bg-red-400 h-screen w-screen">Xin chao anh em</div>;
+  const router = useRouter();
+  useEffect(() => {
+    router.push("/login");
+  }, []);
+
+  return (
+    <div className="flex justify-center items-center h-screen w-screen">
+      <p>Redirecting...</p>
+    </div>
+  );
 }

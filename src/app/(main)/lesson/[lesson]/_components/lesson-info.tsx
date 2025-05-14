@@ -1,4 +1,4 @@
-import { VnChip, VnIconButton } from "@/components/ui";
+import { VnChip, VnIconButton } from "@/components";
 import { ICourse } from "@/types";
 import { formatCurrentDate } from "@/utils";
 import { useRouter } from "next/navigation";

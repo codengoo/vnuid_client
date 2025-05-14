@@ -1,6 +1,6 @@
 "use client";
 
-import { ITableColumn, VnTable } from "@/components/ui";
+import { ITableColumn, VnTable } from "@/components";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
 import { getSubjectDetails } from "@/helpers/subject";
 import { ICheckin, ICourse } from "@/types";

@@ -1,6 +1,6 @@
 "use client";
 
-import { VnInput, VnInputSuggest } from "@/components/ui";
+import { VnInput, VnInputSuggest } from "@/components";
 import { addRoom, delRoom, getWifisAsAdmin } from "@/helpers/admin";
 import { IRoom, IWifi } from "@/types";
 import { ChangeEvent, useEffect, useState } from "react";

@@ -1,7 +1,9 @@
+"use client";
+
 import cn from "classnames";
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { IconType } from "react-icons";
-import { VnInput } from "../../../components/ui";
+import { VnInput } from "@/components";
 
 interface ItemInfo {
   label: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import { StudentCard } from "@/app/_components";
-import { VnButton, VnChip } from "@/components/ui";
+import { VnButton, VnChip } from "@/components";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
 import { getSubjectDetails } from "@/helpers/subject";
 import { ExportModal, SessionModal, StudentInfoModal } from "@/modal";

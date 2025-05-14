@@ -1,4 +1,4 @@
-import { ITableColumn, VnInput, VnTable } from "@/components/ui";
+import { ITableColumn, VnInput, VnTable } from "@/components";
 import { ICourse } from "@/types";
 import { formatDateTime } from "@/utils";
 import { useMemo } from "react";

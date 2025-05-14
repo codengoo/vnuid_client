@@ -57,6 +57,11 @@ export type IStudent = {
 export type ICheckin = {
   id: string;
   name: string;
+  session: ISession;
+  course: ICourse;
+  _count: {
+    students: number;
+  };
 };
 
 export type IWifi = {

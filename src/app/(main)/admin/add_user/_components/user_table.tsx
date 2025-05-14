@@ -1,4 +1,4 @@
-import { ITableColumn, VnChip, VnInput, VnTable } from "@/components/ui";
+import { ITableColumn, VnChip, VnInput, VnTable } from "@/components";
 import { IExtraUser } from "@/types";
 import { useMemo } from "react";
 import { LuSearch } from "react-icons/lu";

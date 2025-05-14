@@ -1,5 +1,7 @@
+"use client";
+
 import { VnEditable } from "@/components";
-import { VnButton, VnConfirm, VnPopup, VnSwitch } from "@/components/ui";
+import { VnButton, VnConfirm, VnPopup, VnSwitch } from "@/components";
 import { AddSessionDefaultValue } from "@/data";
 import { addSession, deleteSession, updateSession } from "@/helpers/subject";
 import { ISession, ICourse } from "@/types";

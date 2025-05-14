@@ -6,7 +6,7 @@ import {
   VnInput,
   VnInputSuggest,
   VnTextArea,
-} from "@/components/ui";
+} from "@/components";
 import { addCourse, getRoomsAsAdmin, getUsersAsAdmin } from "@/helpers/admin";
 import { ICourse, IExtraUser, IRoom, IUserType } from "@/types";
 import { formatDateTimeForInput } from "@/utils";

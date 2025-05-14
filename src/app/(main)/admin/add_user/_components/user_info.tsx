@@ -1,4 +1,4 @@
-import { VnInput, VnSelect } from "@/components/ui";
+import { VnInput, VnSelect } from "@/components";
 import { addUser, delUser } from "@/helpers/admin";
 import { IExtraUser } from "@/types";
 import { useState } from "react";

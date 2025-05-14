@@ -1,8 +1,8 @@
 "use client";
 
-import { LessonCard, StudentCard } from "@/app/_components";
-import { VnInput, VnSwitchMode } from "@/components/ui";
-import { VnDrawer } from "@/components/ui/drawer";
+import { CourseCard, StudentCard } from "@/app/_components";
+import { VnInput, VnSwitchMode } from "@/components";
+import { VnDrawer } from "@/components";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
 import { getSubjectDetails, getSubjects } from "@/helpers/subject";
 import { ICourse } from "@/types";
@@ -59,7 +59,7 @@ export default function Lesson() {
 
         <div className="grid grid-cols-4 gap-2 justify-between items-center">
           {subjects.map((subject) => (
-            <LessonCard
+            <CourseCard
               key={subject.id}
               subject={subject}
               onShowStudents={() => handleShowStudents(subject.id)}

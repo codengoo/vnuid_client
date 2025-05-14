@@ -1,5 +1,4 @@
-import { VnInput } from "@/components/ui";
-import { LuSearch } from "react-icons/lu";
+import { VnInput } from "@/components";
 
 export function Header() {
   return (
