@@ -1,13 +1,17 @@
+"use client";
+
 import { VnInput, VnInputSuggest } from "@/app/_components/ui";
+import { addRoom, delRoom, getWifisAsAdmin } from "@/helpers/admin";
 import { IRoom, IWifi } from "@/types";
+import { ChangeEvent, useEffect, useState } from "react";
 import { LuSearch } from "react-icons/lu";
+import { SimpleSuggestItem } from "../../_components";
 import { useDataForm } from "../../_hooks";
 import { WifiItemSetting } from "./wifi_setting";
 
 interface IRoomInfoProps {
   values: IRoom[];
   value: IRoom | null;
-  wifiList: IWifi[];
   onChange?: () => void;
 }
 
@@ -15,12 +19,13 @@ export function RoomInfo({
   values,
   onChange,
   value: outerValue,
-  wifiList,
 }: IRoomInfoProps) {
+  const [wifiList, setWifiList] = useState<IWifi[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const { Header, value, handleChange, handleCheck, mode, setValue } =
     useDataForm<IRoom, "name">({
-      onAdd: () => Promise.resolve(true),
-      onDel: () => Promise.resolve(true),
+      onAdd: addRoom,
+      onDel: delRoom,
       onChange,
       value: outerValue,
       values: values,
@@ -32,12 +37,11 @@ export function RoomInfo({
       .map((wifi) => ({
         value: wifi.id,
         components: () => (
-          <div className="p-2 border border-transparent hover:border-gray-300 hover:bg-gray-100 cursor-pointer rounded-lg w-64">
-            <div onClick={() => handleSelect(wifi.id)}>
-              <h3 className="text-gray-800 font-semibold">{wifi.name}</h3>
-              <p className="text-gray-500 font-medium">{wifi.mac}</p>
-            </div>
-          </div>
+          <SimpleSuggestItem
+            description={wifi.mac}
+            title={wifi.name}
+            onClick={() => handleSelect(wifi.id)}
+          />
         ),
       }));
 
@@ -62,6 +66,48 @@ export function RoomInfo({
       ],
     });
   };
+
+  const handleChangeWifiSetting = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    key: keyof IRoom["wifi"][0],
+    id: string,
+  ) => {
+    const text = e.currentTarget.value;
+    console.log(text, key, id);
+
+    // @ts-ignore
+    setValue((value) => {
+      return {
+        ...(value || {}),
+        wifi: (value?.wifi || []).map((wifi) => {
+          if (wifi.wifi_id === id) {
+            return {
+              ...wifi,
+              [key]: text,
+            };
+          }
+          return wifi;
+        }),
+      };
+    });
+  };
+
+  const preload = async () => {
+    try {
+      setLoading(true);
+      // Get all Wifis
+      const wifis = await getWifisAsAdmin();
+      if (!wifis) return;
+      setWifiList(wifis);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    preload();
+  }, []);
 
   return (
     <div className="bg-gray-50 p-4 rounded-xl border border-gray-300">
@@ -96,12 +142,13 @@ export function RoomInfo({
           icon={LuSearch}
         />
       </div>
+
       <div className="mt-5 flex flex-col gap-2">
-        {value?.wifi.map((wifi) => (
+        {(value?.wifi || []).map((wifi) => (
           <WifiItemSetting
             value={wifi}
             wifiList={wifiList}
-            onChange={() => {}}
+            onChange={(e, key) => handleChangeWifiSetting(e, key, wifi.wifi_id)}
             key={wifi.wifi_id}
           />
         ))}

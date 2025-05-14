@@ -1,12 +1,17 @@
-import { VnIconButton, VnInput } from "@/app/_components/ui";
+"use client";
+
+import { VnIconButton, VnInput, VnSelect } from "@/app/_components/ui";
 import { IRoom, IWifi } from "@/types";
-import { useMemo } from "react";
+import { ChangeEvent, useMemo } from "react";
 import { LuWifi, LuX } from "react-icons/lu";
 
 interface IWifiSettingItemProps {
   wifiList: IWifi[];
   value: IRoom["wifi"][0];
-  onChange: (value: IRoom["wifi"][0]) => void;
+  onChange: (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    key: keyof IRoom["wifi"][0],
+  ) => void;
 }
 export function WifiItemSetting({
   onChange,
@@ -35,11 +40,26 @@ export function WifiItemSetting({
       </div>
 
       <div className="flex items-center gap-4">
-        <VnInput id="rssi" value={value.rssi} className="w-24" />
-        <VnInput id="type" value={value.type} className="w-24" />
+        <VnInput
+          id="rssi"
+          value={value.rssi}
+          className="w-24"
+          onChange={(e) => onChange(e, "rssi")}
+        />
+
+        <VnSelect
+          id="type"
+          value={value.type}
+          className="w-24"
+          onChange={(e) => onChange(e, "type")}
+          options={[
+            { value: "LARGER", label: "Lớn hơn" },
+            { value: "SMALLER", label: "Nhỏ hơn" },
+          ]}
+        />
       </div>
 
-      <VnIconButton icon={LuX} color="red"/>
+      <VnIconButton icon={LuX} color="red" />
     </div>
   );
 }

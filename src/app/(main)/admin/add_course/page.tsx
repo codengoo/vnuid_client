@@ -34,7 +34,7 @@ export default function AddCourse() {
     <div>
       <div className="grid grid-cols-5 gap-12">
         <CourseTable courses={courses} onRowClick={handleRowClick} />
-        <CourseInfo courses={courses} course={course} onChange={preload} />
+        <CourseInfo values={courses} value={course} onChange={preload} />
       </div>
     </div>
   );

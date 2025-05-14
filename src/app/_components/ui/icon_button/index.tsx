@@ -4,7 +4,7 @@ import { IconType } from "react-icons";
 
 interface IVnIconButtonProps {
   icon: IconType;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   color?: "default" | "primary" | "red";
   size?: "xs" | "md";
   className?: string;
@@ -16,9 +16,10 @@ export function VnIconButton({
   className,
   onClick,
 }: IVnIconButtonProps) {
-  const handleClick = (ev: MouseEvent) => {
+  const handleClick = (ev: MouseEvent<HTMLButtonElement>) => {
     ev.stopPropagation();
-    onClick && onClick();
+    ev.preventDefault()
+    onClick && onClick(ev);
   };
 
   return (

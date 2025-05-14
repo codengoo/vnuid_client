@@ -40,12 +40,7 @@ export default function AddRoom() {
   return (
     <div className="grid grid-cols-2 gap-12">
       <RoomTable values={values} onRowClick={handleRowClick} />
-      <RoomInfo
-        values={values}
-        value={value}
-        wifiList={wifiList}
-        onChange={preload}
-      />
+      <RoomInfo values={values} value={value} onChange={preload} />
     </div>
   );
 }

@@ -22,8 +22,10 @@ export function UserTable({ users, onRowClick }: IUserTableProps) {
         render: (value) =>
           value === "student" ? (
             <VnChip label={"Sinh viên"} color="green" />
-          ) : (
+          ) : value === "teacher" ? (
             <VnChip label={"Giáo viên"} color="yellow" />
+          ) : (
+            <VnChip label={"Admin"} color="red" />
           ),
       },
     ] as ITableColumn<IExtraUser>[];

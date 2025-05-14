@@ -15,12 +15,14 @@ interface IDataFormProps<T extends { id: string }> {
   onChange?: () => void;
   onAdd: (value: T) => Promise<boolean>;
   onDel: (id: string) => Promise<boolean>;
+  onCreateMode?: () => void;
 }
 
 export function useDataForm<T extends { id: string }, K extends keyof T>({
   onAdd,
   onDel,
   onChange,
+  onCreateMode,
   value: outerValue,
   values,
 }: IDataFormProps<T>) {
@@ -61,7 +63,7 @@ export function useDataForm<T extends { id: string }, K extends keyof T>({
     }
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>, key: keyof T) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>, key: keyof T) => {
     const text = e.currentTarget.value;
     // @ts-ignore
     setValue({
@@ -95,6 +97,7 @@ export function useDataForm<T extends { id: string }, K extends keyof T>({
   const changeToCreateMode = () => {
     setValue(null);
     setMode("create");
+    onCreateMode?.();
   };
 
   useEffect(() => {

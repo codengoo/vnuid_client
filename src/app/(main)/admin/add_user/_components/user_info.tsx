@@ -1,8 +1,8 @@
-import { VnButton, VnInput } from "@/app/_components/ui";
-import { addUser, removeUser } from "@/helpers/admin";
+import { VnInput, VnSelect } from "@/app/_components/ui";
+import { addUser, delUser } from "@/helpers/admin";
 import { IExtraUser } from "@/types";
-import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { useState } from "react";
+import { useDataForm } from "../../_hooks";
 
 type IViewMode = "create" | "view";
 type IHelpTextSet = Record<
@@ -10,134 +10,50 @@ type IHelpTextSet = Record<
   string | undefined
 >;
 interface IUserInfoProps {
-  users: IExtraUser[];
-  user: IExtraUser | null;
+  values: IExtraUser[];
+  value: IExtraUser | null;
   onChange?: () => void;
 }
 
-export function UserInfo({ users, onChange, user: outerUser }: IUserInfoProps) {
-  const [user, setUser] = useState<IExtraUser | null>(null);
-  const [mode, setMode] = useState<IViewMode>("view");
+export function UserInfo({
+  values,
+  onChange,
+  value: outerValue,
+}: IUserInfoProps) {
   const [isLoading, setLoading] = useState(false);
-  const [helpTextSet, setHelpTextSet] = useState<IHelpTextSet>({
-    email: undefined,
-    gid: undefined,
-    sid: undefined,
-  });
-
-  const handleSave = async () => {
-    console.log(user);
-
-    if (!user) return;
-    try {
-      setLoading(true);
-      await addUser(user);
-      toast.success("Thêm người dùng thành công");
-      setUser(null);
-      onChange?.();
-    } catch (error) {
-      toast.error((error as Error).message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!user) return;
-    try {
-      setLoading(true);
-      await removeUser(user.id);
-      toast.success("Xóa người dùng thành công");
-      setUser(null);
-      onChange?.();
-    } catch (error) {
-      toast.error((error as Error).message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    key: keyof IExtraUser,
-  ) => {
-    const value = e.currentTarget.value;
+  const onCreateMode = () => {
     // @ts-ignore
-    setUser({
-      ...(user || {}),
-      [key]: value,
+    setValue({
+      type: "student",
     });
   };
 
-  const handleCheck = (
-    e: KeyboardEvent<HTMLInputElement>,
-    key: keyof IExtraUser,
-  ) => {
-    const value = e.currentTarget.value;
-    for (let i = 0; i < users.length; i++) {
-      if (users[i][key] === value) {
-        setHelpTextSet({ ...helpTextSet, [key]: "Đã tồn tại" });
-        return;
-      }
-    }
-
-    setHelpTextSet({ ...helpTextSet, [key]: void 0 });
-  };
-
-  const isCreatable = (input: IHelpTextSet) => {
-    for (let key in input) {
-      if (input[key as keyof IHelpTextSet] !== undefined) return false;
-    }
-    return true;
-  };
-
-  const changeToCreateMode = () => {
-    setUser(null);
-    setMode("create");
-  };
-
-  useEffect(() => {
-    setUser(outerUser);
-    setMode("view");
-  }, [outerUser]);
+  const {
+    Header,
+    value,
+    handleChange,
+    handleCheck,
+    mode,
+    helpTextSet,
+    setValue,
+  } = useDataForm<IExtraUser, "gid" | "email" | "sid">({
+    onAdd: addUser,
+    onDel: delUser,
+    onChange,
+    value: outerValue,
+    values: values,
+    onCreateMode: onCreateMode,
+  });
 
   return (
     <div className="bg-gray-50 p-4 rounded-xl border border-gray-300">
-      <div className="flex justify-between items-center h-16 ">
-        <h1 className="font-semibold text-2xl text-gray-700">
-          Thông tin sinh viên
-        </h1>
-        <div className="flex gap-2">
-          {mode == "view" && user && (
-            <VnButton
-              label="Xóa"
-              color={"red"}
-              disabled={isLoading}
-              onClick={handleDelete}
-            />
-          )}
-          {mode == "view" && (
-            <VnButton
-              label="Thêm"
-              onClick={changeToCreateMode}
-              disabled={isLoading}
-            />
-          )}
-          {mode == "create" && (
-            <VnButton
-              label="Lưu"
-              onClick={handleSave}
-              disabled={!isCreatable(helpTextSet) || isLoading}
-            />
-          )}
-        </div>
-      </div>
+      <Header title="Thông tin sinh viên" />
 
       <div className="grid grid-cols-2 gap-4">
         <VnInput
           id="name"
           label="Họ và tên"
-          value={user?.name || ""}
+          value={value?.name || ""}
           onChange={(e) => handleChange(e, "name")}
           disabled={mode === "view"}
         />
@@ -146,67 +62,72 @@ export function UserInfo({ users, onChange, user: outerUser }: IUserInfoProps) {
           label="Email"
           onChange={(e) => handleChange(e, "email")}
           onKeyUp={(e) => handleCheck(e, "email")}
-          helpText={helpTextSet.email}
-          value={user?.email || ""}
+          helpText={helpTextSet?.email}
+          value={value?.email || ""}
           disabled={mode === "view"}
         />
         <VnInput
           id="sid"
           label="Mã số sinh viên / Giáo viên"
-          value={user?.sid || ""}
+          value={value?.sid || ""}
           onChange={(e) => handleChange(e, "sid")}
           onKeyUp={(e) => handleCheck(e, "sid")}
-          helpText={helpTextSet.sid}
+          helpText={helpTextSet?.sid}
           disabled={mode === "view"}
         />
         <VnInput
           id="gid"
           label="Số tài khoản Google"
-          value={user?.gid || ""}
+          value={value?.gid || ""}
           onChange={(e) => handleChange(e, "gid")}
           onKeyUp={(e) => handleCheck(e, "gid")}
-          helpText={helpTextSet.gid}
+          helpText={helpTextSet?.gid}
           disabled={mode === "view"}
         />
         <VnInput
           id="official_class"
           label="Lớp chính quy"
-          value={user?.official_class || ""}
+          value={value?.official_class || ""}
           onChange={(e) => handleChange(e, "official_class")}
           disabled={mode === "view"}
         />
-        <VnInput
+        <VnSelect
           id="type"
           label="Loại tài khoản"
-          value={user?.type || ""}
+          value={value?.type || ""}
           onChange={(e) => handleChange(e, "type")}
           disabled={mode === "view"}
+          options={[
+            { label: "Sinh viên", value: "student" },
+            { label: "Giáo viên", value: "teacher" },
+            { label: "Quản trị", value: "admin" },
+          ]}
         />
         <VnInput
           id="phone"
           label="Số điện thoại"
-          value={user?.phone || ""}
+          value={value?.phone || ""}
           onChange={(e) => handleChange(e, "phone")}
           disabled={mode === "view"}
         />
         <VnInput
           id="address"
           label="Địa chỉ"
-          value={user?.address || ""}
+          value={value?.address || ""}
           onChange={(e) => handleChange(e, "address")}
           disabled={mode === "view"}
         />
         <VnInput
           id="password"
           label="Mật khẩu"
-          value={user?.password || ""}
+          value={value?.password || ""}
           onChange={(e) => handleChange(e, "password")}
           disabled={mode === "view"}
         />
         <VnInput
           id="department"
           label="Khoa"
-          value={user?.department || ""}
+          value={value?.department || ""}
           onChange={(e) => handleChange(e, "department")}
           disabled={mode === "view"}
         />

@@ -2,9 +2,9 @@ import { IRoom } from "@/types";
 import { AxiosError } from "axios";
 import { fetcher } from "../network/axios";
 
-export async function addRoom(course: IRoom): Promise<boolean> {
+export async function addRoom(room: IRoom): Promise<boolean> {
   try {
-    const response = await fetcher.post("/admin/room", course);
+    const response = await fetcher.post("/admin/room", room);
     if (response.status === 200) return true;
     else return false;
   } catch (error) {

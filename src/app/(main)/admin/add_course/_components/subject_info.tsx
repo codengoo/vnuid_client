@@ -3,96 +3,64 @@
 import { StudentCard } from "@/app/_components";
 import {
   ItemSuggest,
-  VnButton,
   VnInput,
   VnInputSuggest,
   VnTextArea,
 } from "@/app/_components/ui";
-import { addCourse, getUsersAsAdmin } from "@/helpers/admin";
-import { ICourse, IExtraUser, IUserType } from "@/types";
+import { addCourse, getRoomsAsAdmin, getUsersAsAdmin } from "@/helpers/admin";
+import { ICourse, IExtraUser, IRoom, IUserType } from "@/types";
 import { formatDateTimeForInput } from "@/utils";
 import { removeVietnameseTones } from "@/utils/text";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { LuSearch } from "react-icons/lu";
-import { toast } from "react-toastify";
-
-type IViewMode = "create" | "view";
+import { SimpleSuggestItem } from "../../_components";
+import { useDataForm } from "../../_hooks";
 
 interface ISubjectInfoProps {
-  courses: ICourse[];
-  course: ICourse | null;
+  values: ICourse[];
+  value: ICourse | null;
   onChange?: () => void;
 }
 
 export function CourseInfo({
-  courses,
-  course: outerCourse,
+  values,
+  value: outerValue,
   onChange,
 }: ISubjectInfoProps) {
-  const [course, setCourse] = useState<ICourse | null>(null);
   const [studentIds, setStudentIds] = useState<string[]>([]);
-  const [mode, setMode] = useState<IViewMode>("view");
   const [isLoading, setLoading] = useState(false);
   const [users, setUsers] = useState<IExtraUser[]>([]);
+  const [rooms, setRooms] = useState<IRoom[]>([]);
 
-  const handleSave = async () => {
-    if (!course) return;
-    try {
-      setLoading(true);
-      console.log(course, studentIds);
-      await addCourse(course, studentIds);
-
-      toast.success("Thêm khóa học thành công");
-      setCourse(null);
-      onChange?.();
-    } catch (error) {
-      toast.error((error as Error).message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!course) return;
-    try {
-      setLoading(true);
-      // await removeUser(user.id);
-      toast.success("Xóa người dùng thành công");
-      setCourse(null);
-      onChange?.();
-    } catch (error) {
-      toast.error((error as Error).message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    key: keyof ICourse,
-  ) => {
-    const value = e.currentTarget.value;
-    if (key === "start_time" || key === "end_time") {
-      const time = new Date(value).toISOString();
-      // @ts-ignore
-      setCourse({
-        ...(course || {}),
-        [key]: time,
-      });
-    } else {
-      // @ts-ignore
-      setCourse({
-        ...(course || {}),
-        [key]: value,
-      });
-    }
-  };
-
-  const handleChangeValue = (value: string, key: keyof ICourse) => {
+  const onCreateMode = () => {
     // @ts-ignore
-    setCourse({
-      ...(course || {}),
-      [key]: value,
+    setValue({
+      end_time: new Date().toISOString(),
+      start_time: new Date().toISOString(),
+    });
+    setStudentIds([]);
+  };
+
+  const { Header, value, handleChange, mode, setValue } = useDataForm<
+    ICourse,
+    "name"
+  >({
+    onAdd: async (value) => {
+      const result = await addCourse(value, studentIds);
+      if (result) setStudentIds([]);
+      return result;
+    },
+    onDel: () => Promise.resolve(false),
+    onCreateMode: onCreateMode,
+    value: outerValue,
+    values,
+  });
+
+  const handleChangeValue = (text: string, key: keyof ICourse) => {
+    // @ts-ignore
+    setValue({
+      ...(value || {}),
+      [key]: text,
     });
   };
 
@@ -104,23 +72,19 @@ export function CourseInfo({
   const preload = async () => {
     try {
       setLoading(true);
+      // Load users
       const users = await getUsersAsAdmin();
       if (!users) return;
       setUsers(users);
+
+      // Load rooms
+      const rooms = await getRoomsAsAdmin();
+      if (!rooms) return;
+      setRooms(rooms);
     } catch (error) {
     } finally {
       setLoading(false);
     }
-  };
-
-  const changeToCreateMode = () => {
-    // @ts-ignore
-    setCourse({
-      end_time: new Date().toISOString(),
-      start_time: new Date().toISOString(),
-    });
-    setStudentIds([]);
-    setMode("create");
   };
 
   const renderFindUserFn = (type: IUserType) => {
@@ -147,48 +111,38 @@ export function CourseInfo({
     };
   };
 
+  const renderFindRoom = (
+    search: string,
+    handleSelect: (value: string) => void,
+  ) => {
+    const filteredRooms = rooms.filter((room) => room.name.includes(search));
+
+    return filteredRooms.map<ItemSuggest>((room) => ({
+      value: room.id,
+      components: () => (
+        <SimpleSuggestItem
+          title={room.name}
+          description={room.address}
+          onClick={() => handleSelect(room.id)}
+        />
+      ),
+    }));
+  };
   useEffect(() => {
     preload();
-    setCourse(outerCourse);
-    setStudentIds(outerCourse?.students.map((s) => s.id) || []);
-    setMode("view");
-  }, [outerCourse]);
+    setStudentIds(outerValue?.students.map((s) => s.id) || []);
+  }, [outerValue]);
 
   return (
     <div className="col-span-3">
-      <div className="flex justify-between items-center h-16 ">
-        <h1 className="font-semibold text-2xl text-gray-700">
-          Thông tin khóa học
-        </h1>
-
-        <div className="flex gap-2">
-          {mode == "view" && course && (
-            <VnButton
-              label="Xóa"
-              color={"red"}
-              disabled={isLoading}
-              onClick={handleDelete}
-            />
-          )}
-          {mode == "view" && (
-            <VnButton
-              label="Thêm"
-              onClick={changeToCreateMode}
-              disabled={isLoading}
-            />
-          )}
-          {mode == "create" && (
-            <VnButton label="Lưu" onClick={handleSave} disabled={isLoading} />
-          )}
-        </div>
-      </div>
+      <Header title=" Thông tin khóa học" />
 
       <div className="grid grid-cols-4 gap-4">
         <VnInput
           className="col-span-3"
           id="name"
           label="Tên khóa học"
-          value={course?.name || ""}
+          value={value?.name || ""}
           onChange={(e) => handleChange(e, "name")}
           disabled={mode === "view"}
         />
@@ -197,7 +151,7 @@ export function CourseInfo({
           className="col-span-1"
           id="code"
           label="Mã khóa học"
-          value={course?.code || ""}
+          value={value?.code || ""}
           onChange={(e) => handleChange(e, "code")}
           disabled={mode === "view"}
         />
@@ -206,7 +160,7 @@ export function CourseInfo({
           className="col-span-4"
           id="description"
           label="Mô tả"
-          value={course?.description || ""}
+          value={value?.description || ""}
           onChange={(e) => handleChange(e, "description")}
           disabled={mode === "view"}
         />
@@ -214,7 +168,7 @@ export function CourseInfo({
         <VnInput
           id="start_time"
           label="Thời gian bắt đầu"
-          value={formatDateTimeForInput(course?.start_time) || ""}
+          value={formatDateTimeForInput(value?.start_time) || ""}
           onChange={(e) => handleChange(e, "start_time")}
           disabled={mode === "view"}
           type="datetime-local"
@@ -223,17 +177,18 @@ export function CourseInfo({
         <VnInput
           id="end_time"
           label="Thời gian kết thúc"
-          value={formatDateTimeForInput(course?.end_time) || ""}
+          value={formatDateTimeForInput(value?.end_time) || ""}
           onChange={(e) => handleChange(e, "end_time")}
           disabled={mode === "view"}
           type="datetime-local"
         />
 
-        <VnInput
-          id="address"
-          label="Địa điểm"
-          value={course?.address || ""}
-          onChange={(e) => handleChange(e, "address")}
+        <VnInputSuggest
+          id="room_id"
+          label="Phòng học"
+          filterFn={renderFindRoom}
+          value={value?.room_id || ""}
+          onChange={(val) => handleChangeValue(val, "room_id")}
           disabled={mode === "view"}
         />
 
@@ -241,7 +196,7 @@ export function CourseInfo({
           id="teacher_id"
           label="Giáo viên"
           filterFn={renderFindUserFn("teacher")}
-          value={course?.teacher_id || ""}
+          value={value?.teacher_id || ""}
           onChange={(val) => handleChangeValue(val, "teacher_id")}
           disabled={mode === "view"}
         />

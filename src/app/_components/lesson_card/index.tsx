@@ -3,6 +3,7 @@ import { formatTimeRange } from "@/utils";
 import Link from "next/link";
 import { LuUsers } from "react-icons/lu";
 import { VnChip, VnIconButton } from "../ui";
+import { MouseEvent } from "react";
 
 interface ILessonCardProps {
   subject: ICourse;
@@ -22,7 +23,7 @@ export function LessonCard({ subject, onShowStudents }: ILessonCardProps) {
         <VnIconButton icon={LuUsers} color="primary" onClick={onShowStudents} />
       </div>
       <div className="flex gap-2">
-        <VnChip label={subject.address} color="green" />
+        <VnChip label={subject.room.address} color="green" />
         <VnChip
           label={formatTimeRange(subject.start_time, subject.end_time)}
           color="yellow"

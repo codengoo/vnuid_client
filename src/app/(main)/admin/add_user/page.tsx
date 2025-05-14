@@ -33,7 +33,7 @@ export default function AddUser() {
   return (
     <div className="grid grid-cols-3 gap-12">
       <UserTable users={users} onRowClick={handleRowClick}/>
-      <UserInfo users={users} user={user} onChange={preload}/>
+      <UserInfo values={users} value={user} onChange={preload}/>
     </div>
   );
 }

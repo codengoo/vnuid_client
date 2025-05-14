@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { fetcher } from "../network/axios";
 
-export async function removeUser(id: string): Promise<boolean> {
+export async function delUser(id: string): Promise<boolean> {
   try {
     const response = await fetcher.post("/manage/remove_many", {
       ids: [id],
