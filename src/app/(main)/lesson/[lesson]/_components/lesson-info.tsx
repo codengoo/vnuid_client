@@ -8,6 +8,7 @@ interface LessonInfoProps {
   onExport?: () => void;
 }
 export function LessonInfo({ subject, onExport }: LessonInfoProps) {
+  if (!subject) return null;
   return (
     <div className="flex items-start justify-between">
       <div>

@@ -9,9 +9,11 @@ import {
   LuClock,
   LuHouse,
   LuLifeBuoy,
+  LuPackage,
   LuPresentation,
   LuSettings,
   LuUsers,
+  LuWifi,
 } from "react-icons/lu";
 import { Tab } from "../tab";
 
@@ -30,6 +32,8 @@ export function Sidebar() {
           <Tab icon={LuClock} label="History" url="/history" />
           <Tab icon={LuUsers} label="Add users" url="/admin/add_user" />
           <Tab icon={LuBook} label="Add courses" url="/admin/add_course" />
+          <Tab icon={LuWifi} label="Add wifi" url="/admin/add_wifi" />
+          <Tab icon={LuPackage} label="Add rooms" url="/admin/add_room" />
         </div>
 
         <div className="space-y-2">

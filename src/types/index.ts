@@ -1,4 +1,4 @@
-export type IUserType = "admin" | "student" | "teacher"
+export type IUserType = "admin" | "student" | "teacher";
 
 export interface IUser {
   id: string;
@@ -52,3 +52,20 @@ export type IStudent = {
   student: IUser;
   checkins: ISession[];
 };
+
+export type ICheckin = {
+  id: string;
+  name: string;
+};
+
+export type IWifi = {
+  id: string;
+  mac: string;
+  name: string;
+};
+
+export type IRoom = {
+  id: string;
+  name: string;
+  address: string;
+}
