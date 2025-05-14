@@ -1,8 +1,8 @@
 "use client";
 
 import { LessonCard, StudentCard } from "@/app/_components";
-import { VnInput, VnSwitchMode } from "@/app/_components/ui";
-import { VnDrawer } from "@/app/_components/ui/drawer";
+import { VnInput, VnSwitchMode } from "@/components/ui";
+import { VnDrawer } from "@/components/ui/drawer";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
 import { getSubjectDetails, getSubjects } from "@/helpers/subject";
 import { ICourse } from "@/types";

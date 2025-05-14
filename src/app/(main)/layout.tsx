@@ -1,6 +1,6 @@
 import { AuthProvider } from "@/contexts";
-import { VnToast } from "../_components/toast";
-import { VnBreadCrumb } from "../_components/ui";
+import { VnToast } from "@/components";
+import { VnBreadCrumb } from "../../components/ui";
 import { Header, Sidebar } from "./_components";
 
 interface MainLayoutProps {

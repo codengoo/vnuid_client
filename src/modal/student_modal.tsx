@@ -1,4 +1,4 @@
-import { VnChip, VnDrawer } from "@/app/_components/ui";
+import { VnChip, VnDrawer } from "@/components/ui";
 import { getStudentInfo } from "@/helpers/subject/get_student_info";
 import { IStudent } from "@/types";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";

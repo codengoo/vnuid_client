@@ -1,4 +1,4 @@
-import { VnPopup } from "@/app/_components/ui";
+import { VnPopup } from "@/components/ui";
 import { useAuth } from "@/contexts";
 import { Avatar } from "flowbite-react";
 import { Dispatch, SetStateAction } from "react";

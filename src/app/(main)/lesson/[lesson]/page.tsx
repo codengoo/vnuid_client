@@ -1,7 +1,7 @@
 "use client";
 
 import { StudentCard } from "@/app/_components";
-import { VnButton, VnChip } from "@/app/_components/ui";
+import { VnButton, VnChip } from "@/components/ui";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
 import { getSubjectDetails } from "@/helpers/subject";
 import { ExportModal, SessionModal, StudentInfoModal } from "@/modal";
@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { LuPlus } from "react-icons/lu";
 import { InfoBox, LessonInfo, TeacherBox } from "./_components";
-import AttendanceBox from "./_components/attendance-box";
+import CheckinBox from "./_components/attendance-box";
 export default function LessonDetail() {
   const { lesson } = useParams<{ lesson: string }>();
   const [subjectDetail, setSubjectDetail] = useState<ICourse | null>(null);
@@ -117,7 +117,7 @@ export default function LessonDetail() {
   return (
     <MainContentInfo>
       <HeaderContentInfo>
-        <LessonInfo subject={subjectDetail} onExport={handleOpenExportModal} />
+        <LessonInfo course={subjectDetail} onExport={handleOpenExportModal} />
         <div className="flex gap-4">
           <div className="w-1/3 space-y-4 flex-none">
             <TeacherBox teacher={subjectDetail.teacher} />
@@ -164,7 +164,7 @@ export default function LessonDetail() {
 
         <div className="grid grid-cols-4 gap-4">
           {subjectDetail.session.map((session) => (
-            <AttendanceBox
+            <CheckinBox
               key={session.id}
               session={session}
               onClick={() => handleEditSession(session.id)}

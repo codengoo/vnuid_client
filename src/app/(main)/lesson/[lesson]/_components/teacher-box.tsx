@@ -1,4 +1,4 @@
-import { VnChip } from "@/app/_components/ui";
+import { VnChip } from "@/components/ui";
 import { IUser } from "@/types";
 
 interface ITeacherBox {

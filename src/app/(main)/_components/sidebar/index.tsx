@@ -2,7 +2,7 @@
 
 import { VnLogo } from "@/app/_components";
 import { VnAvatar } from "@/app/_components/avatar";
-import { VnIconButton } from "@/app/_components/ui";
+import { VnIconButton } from "@/components/ui";
 import {
   LuBook,
   LuChevronsRightLeft,
@@ -27,7 +27,6 @@ export function Sidebar() {
 
       <div className="flex flex-col justify-between h-full">
         <div className="flex flex-col gap-1">
-          <Tab icon={LuHouse} label="Home" url="/dashboard" />
           <Tab icon={LuPresentation} label="Lesson" url="/lesson" />
           <Tab icon={LuClock} label="History" url="/history" />
           <Tab icon={LuUsers} label="Add users" url="/admin/add_user" />

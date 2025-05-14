@@ -5,21 +5,28 @@ interface IVnChipProps {
   label: string;
   color?: "default" | "red" | "green" | "yellow";
   copyable?: boolean;
+  onClick?: () => void;
 }
 
-export function VnChip({ label, color = "default", copyable }: IVnChipProps) {
-  const handleCopy = () => {
+export function VnChip({
+  label,
+  color = "default",
+  copyable,
+  onClick,
+}: IVnChipProps) {
+  const handleClick = () => {
     if (copyable) {
       navigator.clipboard.writeText(label);
       toast("Copy thành công", { type: "success" });
     }
+    onClick?.();
   };
 
   return (
     <div
-      onClick={handleCopy}
+      onClick={handleClick}
       className={cn(
-        " border border-gray-300 px-2 py-0.5 rounded-md text-xs w-fit",
+        "border border-gray-300 px-2 py-0.5 rounded-md text-xs w-fit",
         { "bg-gray-200 text-gray-700": color === "default" },
         { "bg-secondary text-tertiary-200 border-tertiary": color === "green" },
         { "bg-orange-200 text-orange-500 border-orange-500": color === "red" },
@@ -27,7 +34,7 @@ export function VnChip({ label, color = "default", copyable }: IVnChipProps) {
           "bg-highlight-200 text-highlight-600 border-highlight-600":
             color === "yellow",
         },
-        { "cursor-pointer": copyable },
+        { "cursor-pointer": copyable || onClick },
       )}
     >
       <span>{label}</span>

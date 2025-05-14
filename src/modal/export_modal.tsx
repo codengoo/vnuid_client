@@ -1,4 +1,4 @@
-import { VnPopup } from "@/app/_components/ui";
+import { VnPopup } from "@/components/ui";
 import { Dispatch, SetStateAction } from "react";
 
 interface IExportModalProps {

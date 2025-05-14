@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { IconType } from "react-icons";
-import { VnInput } from "../ui";
+import { VnInput } from "../../../components/ui";
 
 interface ItemInfo {
   label: string;

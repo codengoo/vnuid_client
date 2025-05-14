@@ -1,5 +1,5 @@
-import { VnEditable } from "@/app/_components";
-import { VnButton, VnConfirm, VnPopup, VnSwitch } from "@/app/_components/ui";
+import { VnEditable } from "@/components";
+import { VnButton, VnConfirm, VnPopup, VnSwitch } from "@/components/ui";
 import { AddSessionDefaultValue } from "@/data";
 import { addSession, deleteSession, updateSession } from "@/helpers/subject";
 import { ISession, ICourse } from "@/types";
@@ -165,7 +165,7 @@ export function SessionModal({
           />
           <div className="grid grid-cols-3 gap-2 h-14 items-center">
             <VnEditable
-              label={subject.address}
+              label={subject.room.address}
               icon={LuSchool}
               editable={false}
               id="address"

@@ -7,8 +7,8 @@ import { useState } from "react";
 import { IoLogoGoogle } from "react-icons/io";
 import { LuLock, LuMail } from "react-icons/lu";
 import { toast } from "react-toastify";
-import { VnToast } from "../_components";
-import { LangButton, VnButton, VnInput } from "../_components/ui";
+import { LangButton, VnButton, VnInput } from "../../components/ui";
+import { VnToast } from "@/components";
 
 export default function LoginPage() {
   const { push } = useRouter();

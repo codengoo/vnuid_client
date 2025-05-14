@@ -6,7 +6,7 @@ interface IAttendanceBox {
   onClick?: () => void;
 }
 
-export default function AttendanceBox({ session, onClick }: IAttendanceBox) {
+export default function CheckinBox({ session, onClick }: IAttendanceBox) {
   return (
     <div
       onClick={onClick}

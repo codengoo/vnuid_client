@@ -1,6 +1,6 @@
 "use client";
 
-import { ITableColumn, VnTable } from "@/app/_components/ui";
+import { ITableColumn, VnTable } from "@/components/ui";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
 import { getSubjectDetails } from "@/helpers/subject";
 import { ICheckin, ICourse } from "@/types";
@@ -30,7 +30,7 @@ export default function Live() {
   return (
     <MainContentInfo>
       <HeaderContentInfo>
-        <LessonInfo subject={subjectDetail as ICourse} />
+        <LessonInfo course={subjectDetail as ICourse} />
       </HeaderContentInfo>
 
       <div>

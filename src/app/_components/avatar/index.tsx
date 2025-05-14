@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { LuChevronRight, LuCircleUser, LuLogOut } from "react-icons/lu";
 import { toast } from "react-toastify";
-import { VnIconButton, VnMenu } from "../ui";
-import { IMenuItemProps } from "../ui/menu/menu_item";
+import { VnIconButton, VnMenu } from "../../../components/ui";
+import { IMenuItemProps } from "../../../components/ui/menu/menu_item";
 import { useAuth } from "@/contexts";
 
 export function VnAvatar() {

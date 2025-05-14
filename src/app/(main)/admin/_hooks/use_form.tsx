@@ -1,4 +1,4 @@
-import { VnButton } from "@/app/_components/ui";
+import { VnButton } from "@/components/ui";
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { VnIconButton, VnInput, VnSelect } from "@/app/_components/ui";
+import { VnIconButton, VnInput, VnSelect } from "@/components/ui";
 import { IRoom, IWifi } from "@/types";
 import { ChangeEvent, useMemo } from "react";
 import { LuWifi, LuX } from "react-icons/lu";

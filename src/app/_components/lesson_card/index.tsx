@@ -2,7 +2,7 @@ import { ICourse } from "@/types";
 import { formatTimeRange } from "@/utils";
 import Link from "next/link";
 import { LuUsers } from "react-icons/lu";
-import { VnChip, VnIconButton } from "../ui";
+import { VnChip, VnIconButton } from "../../../components/ui";
 import { MouseEvent } from "react";
 
 interface ILessonCardProps {

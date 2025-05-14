@@ -1,4 +1,4 @@
-import { ITableColumn } from "@/app/_components/ui";
+import { ITableColumn } from "@/components/ui";
 import { IWifi } from "@/types";
 import { useMemo } from "react";
 import { DataTable } from "../../_components";
