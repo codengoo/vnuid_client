@@ -6,7 +6,7 @@ import { IRoom, IWifi } from "@/types";
 import { ChangeEvent, useEffect, useState } from "react";
 import { LuSearch } from "react-icons/lu";
 import { SimpleSuggestItem } from "../../_components";
-import { useDataForm } from "../../_hooks";
+import { useDataForm } from "@/hooks";
 import { WifiItemSetting } from "./wifi_setting";
 
 interface IRoomInfoProps {

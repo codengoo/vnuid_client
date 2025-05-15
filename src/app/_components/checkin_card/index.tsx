@@ -1,9 +1,9 @@
-import { ICheckin } from "@/types";
+import { IAttendance } from "@/types";
 import Link from "next/link";
 import { VnChip } from "../../../components/ui";
 
 interface ICheckinCardProps {
-  checkin: ICheckin;
+  checkin: IAttendance;
 }
 export function CheckinCard({ checkin }: ICheckinCardProps) {
   return (

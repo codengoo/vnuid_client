@@ -2,7 +2,7 @@ import { VnInput, VnSelect } from "@/components";
 import { addUser, delUser } from "@/helpers/admin";
 import { IExtraUser } from "@/types";
 import { useState } from "react";
-import { useDataForm } from "../../_hooks";
+import { useDataForm } from "@/hooks";
 
 type IViewMode = "create" | "view";
 type IHelpTextSet = Record<

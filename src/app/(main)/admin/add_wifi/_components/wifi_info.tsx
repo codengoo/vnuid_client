@@ -1,7 +1,7 @@
 import { VnInput } from "@/components";
 import { addWifi, delWifi } from "@/helpers/admin";
 import { IWifi } from "@/types";
-import { useDataForm } from "../../_hooks";
+import { useDataForm } from "@/hooks";
 
 interface IWifiInfoProps {
   values: IWifi[];

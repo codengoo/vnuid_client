@@ -3,7 +3,7 @@
 import { StudentCard } from "@/app/_components";
 import { VnButton, VnChip } from "@/components";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
-import { getSubjectDetails } from "@/helpers/subject";
+import { getCourseDetails, getCurrentSessions } from "@/helpers/subject";
 import { ExportModal, SessionModal, StudentInfoModal } from "@/modal";
 import { ISession, ICourse } from "@/types";
 import { ApexOptions } from "apexcharts";
@@ -11,11 +11,11 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { LuPlus } from "react-icons/lu";
-import { InfoBox, LessonInfo, TeacherBox } from "./_components";
+import { InfoBox, CourseInfo, TeacherBox } from "./_components";
 import CheckinBox from "./_components/attendance-box";
 export default function LessonDetail() {
   const { lesson } = useParams<{ lesson: string }>();
-  const [subjectDetail, setSubjectDetail] = useState<ICourse | null>(null);
+  const [courseDetail, setCourseDetail] = useState<ICourse | null>(null);
   const [isOpenPopup, setOpenPopup] = useState<boolean>(false);
   const [isOpenEditPopup, setOpenEditPopup] = useState<boolean>(false);
   const [sessionData, setSessionData] = useState<ISession>();
@@ -96,31 +96,30 @@ export default function LessonDetail() {
   };
 
   const handleEditSession = (id: string) => {
-    const data = subjectDetail?.session.find((session) => session.id === id);
+    const data = courseDetail?.session.find((session) => session.id === id);
     if (!data) return;
     setSessionData(data);
     setOpenEditPopup(true);
   };
 
   const prepare = async () => {
-    const subject = await getSubjectDetails(lesson as string);
-    console.log(subject);
-    setSubjectDetail(subject || null);
+    const course = await getCourseDetails(lesson as string);
+    setCourseDetail(course || null);
   };
 
   useEffect(() => {
     prepare();
   }, []);
 
-  if (subjectDetail === null) return null;
+  if (courseDetail === null) return null;
 
   return (
     <MainContentInfo>
       <HeaderContentInfo>
-        <LessonInfo course={subjectDetail} onExport={handleOpenExportModal} />
+        <CourseInfo course={courseDetail}  onExport={handleOpenExportModal} />
         <div className="flex gap-4">
           <div className="w-1/3 space-y-4 flex-none">
-            <TeacherBox teacher={subjectDetail.teacher} />
+            <TeacherBox teacher={courseDetail.teacher} />
             <div className="grid grid-cols-2 gap-4">
               <InfoBox
                 title="Ty le diem danh"
@@ -163,7 +162,7 @@ export default function LessonDetail() {
         </div>
 
         <div className="grid grid-cols-4 gap-4">
-          {subjectDetail.session.map((session) => (
+          {courseDetail.session.map((session) => (
             <CheckinBox
               key={session.id}
               session={session}
@@ -177,13 +176,13 @@ export default function LessonDetail() {
         <div className="flex gap-4 items-center">
           <h2 className="text-2xl font-medium text-gray-700">Sinh viên</h2>
           <VnChip
-            label={`${subjectDetail.students.length} sinh viên`}
+            label={`${courseDetail.students.length} sinh viên`}
             color="yellow"
           />
         </div>
 
         <div className="grid grid-cols-5 gap-4">
-          {subjectDetail.students.map((student) => (
+          {courseDetail.students.map((student) => (
             <StudentCard
               student={student}
               key={student.id}
@@ -196,7 +195,7 @@ export default function LessonDetail() {
       <SessionModal
         isOpenPopup={isOpenPopup}
         setOpenPopup={setOpenPopup}
-        subject={subjectDetail}
+        course={courseDetail}
         onSuccess={prepare}
         mode="create"
       />
@@ -204,7 +203,7 @@ export default function LessonDetail() {
       <SessionModal
         isOpenPopup={isOpenEditPopup}
         setOpenPopup={setOpenEditPopup}
-        subject={subjectDetail}
+        course={courseDetail}
         onSuccess={prepare}
         mode="view"
         sessionData={sessionData}
@@ -214,13 +213,13 @@ export default function LessonDetail() {
         isOpen={isOpenDrawer}
         setOpen={setOpenDrawer}
         studentID={studentId!}
-        subjectID={subjectDetail.id}
+        subjectID={courseDetail.id}
       />
 
       <ExportModal
         isOpen={isOpenExportModal}
         setOpen={setOpenExportModal}
-        subjectID={subjectDetail.id}
+        subjectID={courseDetail.id}
       />
     </MainContentInfo>
   );

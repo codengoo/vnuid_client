@@ -1,6 +1,6 @@
 import { format, getHours } from "date-fns";
 import { vi } from "date-fns/locale";
-
+import { RRule } from "rrule";
 export function formatTimeRange(start: Date | string, end: Date | string) {
   const startHour = getHours(new Date(start));
   const endHour = getHours(new Date(end));
@@ -37,4 +37,23 @@ export function formatDateTime(date: Date | string = new Date()) {
   } catch (error) {
     return null;
   }
+}
+
+export function isRunningNow(start: Date | string, duration: number): boolean {
+  const now = new Date();
+
+  const rule = new RRule({
+    freq: RRule.WEEKLY,
+    interval: 1,
+    dtstart: new Date(start),
+  });
+
+  const previousOccurrence = rule.before(now, true);
+  if (!previousOccurrence) return false;
+
+  const time_now = now.getTime();
+  const time_start = previousOccurrence.getTime();
+  const time_end = previousOccurrence.getTime() + duration * 60000;
+
+  return time_now >= time_start && time_now <= time_end;
 }

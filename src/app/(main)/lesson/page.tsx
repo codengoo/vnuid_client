@@ -4,7 +4,7 @@ import { CourseCard, StudentCard } from "@/app/_components";
 import { VnInput, VnSwitchMode } from "@/components";
 import { VnDrawer } from "@/components";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
-import { getSubjectDetails, getSubjects } from "@/helpers/subject";
+import { getCourseDetails, getSubjects } from "@/helpers/subject";
 import { ICourse } from "@/types";
 import { formatCurrentDate } from "@/utils";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ export default function Lesson() {
   };
 
   const handleShowStudents = async (subjectId: string) => {
-    const subject = await getSubjectDetails(subjectId);
+    const subject = await getCourseDetails(subjectId);
     if (subject) {
       setSubjectDetail(subject);
       setOpenDrawer(true);

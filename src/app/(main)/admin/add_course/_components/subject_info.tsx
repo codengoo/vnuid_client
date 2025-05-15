@@ -1,20 +1,16 @@
 "use client";
 
 import { StudentCard } from "@/app/_components";
-import {
-  ItemSuggest,
-  VnInput,
-  VnInputSuggest,
-  VnTextArea,
-} from "@/components";
+import { ItemSuggest, VnInput, VnInputSuggest, VnTextArea } from "@/components";
 import { addCourse, getRoomsAsAdmin, getUsersAsAdmin } from "@/helpers/admin";
+import { delCourse } from "@/helpers/admin/del_course";
 import { ICourse, IExtraUser, IRoom, IUserType } from "@/types";
 import { formatDateTimeForInput } from "@/utils";
 import { removeVietnameseTones } from "@/utils/text";
 import { useEffect, useState } from "react";
 import { LuSearch } from "react-icons/lu";
 import { SimpleSuggestItem } from "../../_components";
-import { useDataForm } from "../../_hooks";
+import { useDataForm } from "@/hooks";
 
 interface ISubjectInfoProps {
   values: ICourse[];
@@ -45,15 +41,15 @@ export function CourseInfo({
     ICourse,
     "name"
   >({
-    onAdd: async (value) => {
-      const result = await addCourse(value, studentIds);
-      if (result) setStudentIds([]);
-      return result;
-    },
-    onDel: () => Promise.resolve(false),
+    onAdd: async (value) => await addCourse(value, studentIds),
+    onDel: delCourse,
     onCreateMode: onCreateMode,
     value: outerValue,
     values,
+    onChange: () => {
+      setStudentIds([]);
+      onChange?.();
+    },
   });
 
   const handleChangeValue = (text: string, key: keyof ICourse) => {

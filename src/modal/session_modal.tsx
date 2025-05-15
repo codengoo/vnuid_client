@@ -1,10 +1,15 @@
 "use client";
 
-import { VnEditable } from "@/components";
-import { VnButton, VnConfirm, VnPopup, VnSwitch } from "@/components";
+import {
+  VnButton,
+  VnConfirm,
+  VnEditable,
+  VnPopup,
+  VnSwitch,
+} from "@/components";
 import { AddSessionDefaultValue } from "@/data";
 import { addSession, deleteSession, updateSession } from "@/helpers/subject";
-import { ISession, ICourse } from "@/types";
+import { ICourse, ISession } from "@/types";
 import { formatTime } from "@/utils";
 import { useEffect, useState } from "react";
 import { LuCalendarClock, LuHourglass, LuSchool } from "react-icons/lu";
@@ -13,7 +18,7 @@ import { toast } from "react-toastify";
 interface ISessionModalProps {
   isOpenPopup: boolean;
   setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
-  subject: ICourse;
+  course: ICourse;
   onSuccess: () => {};
   mode: "create" | "view";
   sessionData?: ISession;
@@ -35,7 +40,7 @@ const ItemSwitch = ({ label }: IItemSwitch) => {
 export function SessionModal({
   isOpenPopup,
   setOpenPopup,
-  subject,
+  course,
   onSuccess,
   mode,
   sessionData,
@@ -44,7 +49,7 @@ export function SessionModal({
   const [isShowConfirm, setShowConfirm] = useState(false);
   const [newSession, setNewSession] = useState<Partial<ISession>>({
     ...AddSessionDefaultValue,
-    subjectId: subject.id,
+    course_id: course.id,
   });
 
   const handleSave = async () => {
@@ -123,10 +128,10 @@ export function SessionModal({
     } else {
       setNewSession({
         ...AddSessionDefaultValue,
-        subjectId: subject.id,
+        course_id: course.id,
       });
     }
-  }, [mode, sessionData, subject.id]);
+  }, [mode, sessionData, course.id]);
 
   return (
     <VnPopup
@@ -167,7 +172,7 @@ export function SessionModal({
           />
           <div className="grid grid-cols-3 gap-2 h-14 items-center">
             <VnEditable
-              label={subject.room.address}
+              label={course.room.address}
               icon={LuSchool}
               editable={false}
               id="address"

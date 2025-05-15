@@ -7,20 +7,21 @@ import {
   TableRow,
 } from "flowbite-react";
 
+import { get, Paths, PathValue } from "@/utils";
 import { default as cn } from "classnames";
 import { ReactNode } from "react";
 import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
 import { VnDropdown } from "../dropdown";
 import { VnIconButton } from "../icon_button";
 
-export interface ITableColumn<T extends { id: string }> {
+export interface ITableColumn<T extends { id: string }, P extends Paths<T>> {
   label: string;
-  value: keyof T | "index";
-  render: (value: T[keyof T]) => ReactNode;
+  value: P;
+  render: (value: PathValue<T, P>) => ReactNode;
 }
 
 interface IVnTableProps<T extends { id: string }> {
-  columns: ITableColumn<T>[];
+  columns:  ITableColumn<T, any>[]
   columnRatios?: number[];
   values: T[];
   onRowClick?: (id: string) => void;
@@ -81,7 +82,7 @@ export function VnTable<T extends { id: string }>({
                   >
                     {column.value === "index"
                       ? idx + 1
-                      : column.render(value[column.value])}
+                      : column.render(get(value, column.value))}
                   </TableCell>
                 ))}
               </TableRow>

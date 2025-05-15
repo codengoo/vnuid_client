@@ -45,23 +45,13 @@ export interface ISession {
   start: string;
   duration: number;
   repeat: string;
-  subjectId: string;
-  subject: ICourse;
+  course_id: string;
+  course: ICourse;
 }
 
 export type IStudent = {
   student: IUser;
   checkins: ISession[];
-};
-
-export type ICheckin = {
-  id: string;
-  name: string;
-  session: ISession;
-  course: ICourse;
-  _count: {
-    students: number;
-  };
 };
 
 export type IWifi = {
@@ -80,4 +70,26 @@ export type IRoom = {
     type: IThreshold;
     rssi: number;
   }[];
+};
+
+export type ISessionCycle = {
+  id: string;
+  start: string;
+  session_id: string;
+  course_id: string;
+  attendances: IAttendance[];
+  course: ICourse;
+  session: ISession;
+};
+
+export type IAttendance = {
+  id: string;
+  time: string;
+  verified: boolean;
+  device_id: string;
+  student_id: string;
+  session_cycle_id: string;
+  session_id: string;
+  course_id: string;
+  student: IUser;
 };
