@@ -21,8 +21,8 @@ export function VnButton({ id, icon: Icon, label, ...props }: IVnButtonProps) {
         },
       }}
     >
-      {Icon && <Icon size={20} />}
-      {label}
+      {Icon && <Icon size={20} className="flex-none"/>}
+      <span className="overflow-hidden text-nowrap truncate">{label}</span>
     </Button>
   );
 }

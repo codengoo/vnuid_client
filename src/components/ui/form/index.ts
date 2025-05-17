@@ -3,3 +3,4 @@ export * from "./text_area";
 export * from "./switch"
 export * from "./suggest"
 export * from "./select"
+export * from "./input_formik"

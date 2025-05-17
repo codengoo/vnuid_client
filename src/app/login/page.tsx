@@ -1,52 +1,52 @@
 "use client";
 
+import { LangButton, VnButton, VnInputFormik, VnToast } from "@/components";
 import { login } from "@/helpers/login";
+import { useFormik } from "formik";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { IoLogoGoogle } from "react-icons/io";
 import { LuLock, LuMail } from "react-icons/lu";
 import { toast } from "react-toastify";
-import { LangButton, VnButton, VnInput } from "../../components/ui";
-import { VnToast } from "@/components";
+import { object, string } from "yup";
+
+interface IFormData {
+  username: string;
+  password: string;
+}
 
 export default function LoginPage() {
   const { push } = useRouter();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setLoading] = useState(false);
-  const handleChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-  };
-
-  const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleLogin();
-    }
-  };
 
   const handleLogin = async () => {
     try {
-      setLoading(true);
-      await login(username, password);
+      await login(formik.values.username, formik.values.password);
       toast.success("Login thành công");
       push("/lesson");
     } catch (error) {
       toast.error((error as Error).message);
-      setPassword("")
-    } finally {
-      setLoading(false);
+      formik.setValues({ ...formik.values, password: "" });
     }
   };
 
+  const formik = useFormik<IFormData>({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+
+    validationSchema: object({
+      username: string().length(8).required(),
+      password: string().required(),
+    }),
+    onSubmit: async () => {
+      await handleLogin();
+    },
+  });
+
   return (
-    <main className="bg-primary w-screen h-screen overflow-hidden flex justify-center items-center">
-      <div className="w-1/2 h-2/3 bg-white rounded-3xl shadow-2xl flex">
-        <div className="p-5 w-2/5 flex-none flex flex-col">
+    <main className="bg-primary w-screen h-screen overflow-hidden flex justify-center items-center px-10">
+      <div className="w-full xl:w-1/2 h-2/3 bg-white rounded-3xl shadow-2xl flex">
+        <div className="p-5 w-full sm:w-[350px] flex-none flex flex-col">
           <div className="flex justify-end items-center w-full">
             <LangButton />
           </div>
@@ -54,63 +54,41 @@ export default function LoginPage() {
             <div className="">
               <div className="p-5 space-y-2">
                 <h1 className="text-3xl text-center font-bold tracking-widest text-gray-800 font-lobster">
-                  LOGIN
+                  Login
                 </h1>
                 <p className="text-center text-gray-600">
                   Login to manage your classes
                 </p>
               </div>
 
-              <div className="space-y-8">
+              <form className="space-y-8" onSubmit={formik.handleSubmit}>
                 <div className="space-y-2">
-                  <VnInput
+                  <VnInputFormik
                     id="username"
                     label="Username"
                     icon={LuMail}
                     type="text"
                     placeholder="Enter username"
-                    value={username}
-                    onChange={handleChangeUsername}
+                    formik={formik}
                   />
-                  <VnInput
+                  <VnInputFormik
                     id="password"
                     label="Password"
                     icon={LuLock}
                     type="password"
                     placeholder="Enter password"
-                    value={password}
-                    onChange={handleChangePassword}
-                    onKeyUp={handleKeyPress}
+                    formik={formik}
                   />
                 </div>
 
-                <VnButton
-                  id="login"
-                  fullSized
-                  label="Login"
-                  onClick={handleLogin}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-center text-sm font-semibold text-gray-800">
-                OR
-              </p>
-
-              <VnButton
-                id="login_by_google"
-                fullSized
-                color="alternative"
-                label="Login with Google"
-                icon={IoLogoGoogle}
-              />
+                <VnButton type="submit" id="login" fullSized label="Login" />
+              </form>
             </div>
           </div>
         </div>
 
-        <div className="bg-secondary h-full grow rounded-3xl border-tertiary border-2 flex justify-center items-center">
-          <div className="w-2/3">
+        <div className="hidden sm:flex bg-secondary h-full grow rounded-3xl border-tertiary border-2 justify-center items-center overflow-hidden">
+          <div className="w-full max-w-[640px]">
             <Image
               src={"/images/login_deco.png"}
               alt="login_deco"

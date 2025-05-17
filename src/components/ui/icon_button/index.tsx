@@ -26,7 +26,7 @@ export function VnIconButton({
     <button
       onClick={handleClick}
       className={cn(
-        "p-2 rounded-md hover:bg-gray-200 cursor-pointer w-fit h-fit",
+        "p-2 rounded-md hover:bg-gray-200 cursor-pointer w-fit h-fit flex-none",
         {
           "text-tertiary hover:bg-secondary": color === "primary",
           "text-red-500 hover:bg-red-100": color === "red",

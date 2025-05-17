@@ -7,9 +7,10 @@ interface ITab {
   icon: IconType;
   label: string;
   url: string;
+  isCollapsed: boolean;
 }
 
-export function Tab({ icon: Icon, label, url }: ITab) {
+export function Tab({ icon: Icon, label, url, isCollapsed }: ITab) {
   const pathname = usePathname();
   const isActive = pathname.includes(url);
 
@@ -24,8 +25,8 @@ export function Tab({ icon: Icon, label, url }: ITab) {
           },
         )}
       >
-        <Icon size={20} />
-        <span>{label}</span>
+        <Icon size={20} className="h-6" />
+        {!isCollapsed && <span>{label}</span>}
       </div>
     </Link>
   );
