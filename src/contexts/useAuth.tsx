@@ -1,6 +1,6 @@
 "use client";
 
-import { getProfile } from "@/helpers/login";
+import { getProfile } from "@/actions/login";
 import { IUser } from "@/types";
 import { useRouter } from "next/navigation";
 import {
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useMyAppContext must be used within a MyAppProvider");
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

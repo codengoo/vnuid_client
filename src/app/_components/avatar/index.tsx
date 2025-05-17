@@ -1,5 +1,5 @@
 import { useAuth } from "@/contexts";
-import { logout } from "@/helpers/login";
+import { logout } from "@/actions/login";
 import { ProfileModal } from "@/modal";
 import cn from "classnames";
 import { Avatar, Tooltip } from "flowbite-react";

@@ -1,5 +1,5 @@
+import { fetcher } from "@/helpers";
 import { IUser } from "@/types";
-import { fetcher } from "../network/axios";
 
 export async function getProfile(): Promise<IUser | null> {
   try {

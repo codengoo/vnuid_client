@@ -1,6 +1,6 @@
+import { fetcher } from "@/helpers";
 import { getDeviceId, getDeviceName } from "@/utils";
 import { AxiosError } from "axios";
-import { fetcher } from "../network/axios";
 
 export async function login(username: string, password: string) {
   try {
