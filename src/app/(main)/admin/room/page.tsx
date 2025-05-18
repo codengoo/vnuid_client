@@ -2,35 +2,14 @@
 
 import { getRoomsAsAdmin } from "@/actions/admin";
 import { defaultRoomValue } from "@/configs";
-import { IRoom } from "@/types";
-import { useEffect, useState } from "react";
+import { useSetup } from "@/hooks";
 import { RoomInfo, RoomTable } from "./_components";
 
 export default function AddRoom() {
-  const [isLoading, setLoading] = useState(false);
-  const [values, setValues] = useState<IRoom[]>([]);
-  const [value, setValue] = useState<IRoom>(defaultRoomValue);
-
-  const preload = async () => {
-    try {
-      setLoading(true);
-      // Get All Rooms
-      const rooms = await getRoomsAsAdmin();
-      if (!rooms) return;
-      setValues(rooms);
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRowClick = async (value: IRoom) => {
-    setValue(value);
-  };
-
-  useEffect(() => {
-    preload();
-  }, []);
+  const { handleRowClick, preload, value, values } = useSetup({
+    defaultValues: defaultRoomValue,
+    preloadFn: getRoomsAsAdmin,
+  });
 
   return (
     <div className="grid grid-cols-2 gap-12">

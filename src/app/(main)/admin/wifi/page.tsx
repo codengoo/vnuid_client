@@ -1,35 +1,15 @@
 "use client";
 
 import { getWifisAsAdmin } from "@/actions/admin";
-import { IWifi } from "@/types";
-import { useEffect, useState } from "react";
+import { defaultWifiValue } from "@/configs";
+import { useSetup } from "@/hooks";
 import { WifiInfo, WifiTable } from "./_components";
 
 export default function AddWifi() {
-  const defaultValues: IWifi = { id: "", name: "", mac: "" };
-  const [isLoading, setLoading] = useState(false);
-  const [values, setValues] = useState<IWifi[]>([]);
-  const [value, setValue] = useState<IWifi>(defaultValues);
-
-  const preload = async () => {
-    try {
-      setLoading(true);
-      const wifis = await getWifisAsAdmin();
-      if (!wifis) return;
-      setValues(wifis);
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRowClick = async (value: IWifi) => {
-    setValue(value);
-  };
-
-  useEffect(() => {
-    preload();
-  }, []);
+  const { value, handleRowClick, values, preload } = useSetup({
+    defaultValues: defaultWifiValue,
+    preloadFn: getWifisAsAdmin,
+  });
 
   return (
     <div className="grid grid-cols-2 gap-12">

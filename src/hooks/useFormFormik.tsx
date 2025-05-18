@@ -5,11 +5,6 @@ import { toast } from "react-toastify";
 
 type IViewMode = "create" | "view";
 
-export type IHelpTextSet<T, U extends keyof T> = Record<
-  keyof Pick<T, U>,
-  string | undefined
->;
-
 interface IDataFormFormikProps<T extends { id: string }> {
   listValues: T[];
   onChange?: () => void;

@@ -1,41 +1,21 @@
 "use client";
 
+import { getCoursesAsAdmin } from "@/actions/admin";
 import { defaultCourseValue } from "@/configs";
-import { getCoursesAsAdmin } from "@/helpers/admin";
-import { ICourse } from "@/types";
-import { useEffect, useState } from "react";
+import { useSetup } from "@/hooks";
 import { CourseInfo, CourseTable } from "./_components";
 
 export default function AddCourse() {
-  const [isLoading, setLoading] = useState(false);
-  const [courses, setCourses] = useState<ICourse[]>([]);
-  const [course, setCourse] = useState<ICourse>(defaultCourseValue);
-
-  const preload = async () => {
-    try {
-      setLoading(true);
-      const courses = await getCoursesAsAdmin();
-      if (!courses) return;
-      setCourses(courses);
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRowClick = async (user: ICourse) => {
-    setCourse(user);
-  };
-
-  useEffect(() => {
-    preload();
-  }, []);
+  const { handleRowClick, preload, value, values } = useSetup({
+    defaultValues: defaultCourseValue,
+    preloadFn: getCoursesAsAdmin,
+  });
 
   return (
     <div>
       <div className="grid grid-cols-5 gap-12">
-        <CourseTable courses={courses} onRowClick={handleRowClick} />
-        <CourseInfo values={courses} value={course} onChange={preload} />
+        <CourseTable courses={values} onRowClick={handleRowClick} />
+        <CourseInfo values={values} value={value} onChange={preload} />
       </div>
     </div>
   );

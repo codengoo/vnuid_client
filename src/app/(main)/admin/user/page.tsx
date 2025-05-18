@@ -1,40 +1,20 @@
 "use client";
 
-import { defaultUserValue } from "@/configs";
 import { getUsersAsAdmin } from "@/actions/admin";
-import { IExtraUser } from "@/types";
-import { useEffect, useState } from "react";
+import { defaultUserValue } from "@/configs";
+import { useSetup } from "@/hooks";
 import { UserInfo, UserTable } from "./_components";
 
 export default function AddUser() {
-  const [isLoading, setLoading] = useState(false);
-  const [users, setUsers] = useState<IExtraUser[]>([]);
-  const [user, setUser] = useState<IExtraUser>(defaultUserValue);
-
-  const preload = async () => {
-    try {
-      setLoading(true);
-      const users = await getUsersAsAdmin();
-      if (!users) return;
-      setUsers(users);
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRowClick = async (user: IExtraUser) => {
-    setUser(user);
-  };
-
-  useEffect(() => {
-    preload();
-  }, []);
+  const { handleRowClick, preload, value, values } = useSetup({
+    defaultValues: defaultUserValue,
+    preloadFn: getUsersAsAdmin,
+  });
 
   return (
     <div className="grid grid-cols-3 gap-12">
-      <UserTable users={users} onRowClick={handleRowClick} />
-      <UserInfo values={users} value={user} onChange={preload} />
+      <UserTable users={values} onRowClick={handleRowClick} />
+      <UserInfo values={values} value={value} onChange={preload} />
     </div>
   );
 }
