@@ -1,11 +1,14 @@
 import { ITableColumn, VnInput, VnTable } from "@/components";
+import { Paths } from "@/utils";
+import cn from "classnames";
 import { LuSearch } from "react-icons/lu";
 
 interface IDataTableProps<T extends { id: string }> {
   values: T[];
   onRowClick?: (value: T) => void;
-  columns: ITableColumn<T>[];
+  columns: ITableColumn<T, Paths<T>>[];
   columnRatios?: number[];
+  className?: string;
 }
 
 export function DataTable<T extends { id: string }>({
@@ -13,15 +16,15 @@ export function DataTable<T extends { id: string }>({
   onRowClick,
   columns,
   columnRatios = [],
+  className,
 }: IDataTableProps<T>) {
   const handleRowClick = (id: string) => {
-    console.log(id);
-    const user = values.find((wifi) => wifi.id === id);
-    if (user) onRowClick?.(user);
+    const value = values.find((wifi) => wifi.id === id);
+    if (value) onRowClick?.(value);
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={cn("flex flex-col gap-2", className)}>
       <div className="w-full justify-end flex">
         <VnInput
           id="search"

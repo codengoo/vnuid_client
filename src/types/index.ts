@@ -27,13 +27,13 @@ export interface ICourse {
   start_time: string;
   end_time: string;
   room_id: string;
-  is_done: string;
+  is_done: boolean;
   teacher_id: string;
-  session: ISession[];
-  students: IUser[];
-  teacher: IUser;
-  room: IRoom;
-  _count: {
+  session?: ISession[];
+  students?: IUser[];
+  teacher?: IUser;
+  room?: IRoom;
+  _count?: {
     students: number;
     session: number;
   };

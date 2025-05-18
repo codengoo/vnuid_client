@@ -53,25 +53,25 @@ export function Sidebar() {
           <Tab
             icon={LuUsers}
             label="Add users"
-            url="/admin/add_user"
+            url="/admin/user"
             isCollapsed={isCollapsed}
           />
           <Tab
             icon={LuBook}
             label="Add courses"
-            url="/admin/add_course"
+            url="/admin/course"
             isCollapsed={isCollapsed}
           />
           <Tab
             icon={LuWifi}
             label="Add wifi"
-            url="/admin/add_wifi"
+            url="/admin/wifi"
             isCollapsed={isCollapsed}
           />
           <Tab
             icon={LuPackage}
             label="Add rooms"
-            url="/admin/add_room"
+            url="/admin/room"
             isCollapsed={isCollapsed}
           />
         </div>

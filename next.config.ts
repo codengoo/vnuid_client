@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         destination: "/login",
         permanent: true,
       },
+      {
+        source: "/admin",
+        destination: "/admin/wifi",
+        permanent: true,
+      },
     ];
   },
   eslint: {
@@ -16,7 +21,7 @@ const nextConfig: NextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
-  }
+  },
 };
 
 export default withFlowbiteReact(nextConfig);

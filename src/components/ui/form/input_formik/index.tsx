@@ -1,5 +1,6 @@
 "use client";
 
+import { formatDateTimeForInput } from "@/utils";
 import { HelperText, Label, TextInput, TextInputProps } from "flowbite-react";
 import { FormikValues, useFormik } from "formik";
 import { useState } from "react";
@@ -20,6 +21,7 @@ export const VnInputFormik = function <T extends FormikValues>({
   className,
   rightIcon,
   formik,
+  disabled,
   ...props
 }: IVnInputFormik<T>) {
   const [isVisible, setIsVisible] = useState(false);
@@ -37,6 +39,20 @@ export const VnInputFormik = function <T extends FormikValues>({
     );
   };
 
+  const renderValue = () => {
+    if (type === "datetime-local") {
+      return formatDateTimeForInput(formik.values[id] ?? "") || "";
+    } else return formik.values[id] ?? "";
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (type === "datetime-local") {
+      formik.setFieldValue(id, e.target.value);
+    } else {
+      formik.handleChange(e);
+    }
+  };
+
   const hasError = typeof formik?.errors?.[id] === "string";
   const errorText = hasError ? (formik?.errors?.[id] as string) : undefined;
 
@@ -50,13 +66,13 @@ export const VnInputFormik = function <T extends FormikValues>({
       <TextInput
         id={id}
         name={id}
-        value={formik.values[id] ?? ""}
-        onChange={formik.handleChange}
+        value={renderValue()}
+        onChange={handleChange}
         color={hasError ? "failure" : undefined}
+        disabled={formik.isSubmitting || disabled}
         {...props}
         type={type === "password" ? (isVisible ? "text" : "password") : type}
         rightIcon={rightIcon ? rightIcon : () => renderRightIcon()}
-        disabled={formik.isSubmitting}
         theme={{
           field: {
             rightIcon: {
