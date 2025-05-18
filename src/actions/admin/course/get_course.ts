@@ -1,5 +1,5 @@
 import { ICourse } from "@/types";
-import { fetcher } from "../../../helpers/network/axios";
+import { fetcher } from "@/helpers";
 
 export async function getCoursesAsAdmin(): Promise<ICourse[] | null> {
   try {

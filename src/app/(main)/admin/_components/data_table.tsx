@@ -25,14 +25,6 @@ export function DataTable<T extends { id: string }>({
 
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      <div className="w-full justify-end flex">
-        <VnInput
-          id="search"
-          icon={LuSearch}
-          placeholder="Search"
-          className="w-1/3"
-        />
-      </div>
       <VnTable
         columns={columns}
         values={values}

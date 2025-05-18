@@ -1,6 +1,6 @@
 import { IRoom } from "@/types";
 import { AxiosError } from "axios";
-import { fetcher } from "../network/axios";
+import { fetcher } from "@/helpers";
 
 export async function addRoom(room: IRoom): Promise<boolean> {
   try {

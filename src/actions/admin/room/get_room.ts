@@ -1,5 +1,5 @@
 import { IRoom, IWifi } from "@/types";
-import { fetcher } from "../network/axios";
+import { fetcher } from "@/helpers";
 
 export async function getRoomsAsAdmin(): Promise<IRoom[] | null> {
   try {

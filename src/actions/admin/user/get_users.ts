@@ -1,5 +1,5 @@
 import { IExtraUser } from "@/types";
-import { fetcher } from "../../../helpers/network/axios";
+import { fetcher } from "@/helpers";
 
 export async function getUsersAsAdmin(): Promise<IExtraUser[] | null> {
   try {

@@ -36,17 +36,20 @@ export function useDataFormFormik<T extends { id: string }>({
     validateOnChange: false,
     initialValues: initial,
     validationSchema: schema,
-    validate: (values) => {
+    validate: async (values) => {
       const errors: Record<keyof T, string> = {} as Record<keyof T, string>;
+      console.log(values, listValues, uniqueKeys);
 
       for (let key of uniqueKeys) {
         for (let i = 0; i < listValues.length; i++) {
           if (listValues[i][key] === values[key]) {
             errors[key] = "Đã tồn tại";
-            return;
+            break;
           }
         }
       }
+
+      return errors;
     },
     onSubmit: async () => {
       if (mode === "create") await handleSave();
@@ -74,13 +77,6 @@ export function useDataFormFormik<T extends { id: string }>({
     } catch (error) {
       toast.error((error as Error).message);
     }
-  };
-
-  const isCreatable = () => {
-    for (let key in formik.errors) {
-      if (formik.errors[key] !== undefined) return false;
-    }
-    return true;
   };
 
   const changeToCreateMode = () => {
@@ -118,7 +114,7 @@ export function useDataFormFormik<T extends { id: string }>({
           {mode == "create" && (
             <VnButton
               label="Lưu"
-              disabled={!isCreatable() || formik.isSubmitting}
+              disabled={formik.isSubmitting}
               type="submit"
             />
           )}

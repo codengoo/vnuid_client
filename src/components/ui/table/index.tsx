@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -9,9 +11,10 @@ import {
 
 import { get, Paths, PathValue } from "@/utils";
 import { default as cn } from "classnames";
-import { ReactNode } from "react";
-import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
+import { ReactNode, useEffect, useState } from "react";
+import { LuArrowLeft, LuArrowRight, LuSearch } from "react-icons/lu";
 import { VnDropdown } from "../dropdown";
+import { VnInput } from "../form";
 import { VnIconButton } from "../icon_button";
 
 export interface ITableColumn<T extends { id: string }, P extends Paths<T>> {
@@ -21,7 +24,7 @@ export interface ITableColumn<T extends { id: string }, P extends Paths<T>> {
 }
 
 interface IVnTableProps<T extends { id: string }> {
-  columns:  ITableColumn<T, any>[]
+  columns: ITableColumn<T, any>[];
   columnRatios?: number[];
   values: T[];
   onRowClick?: (id: string) => void;
@@ -34,9 +37,36 @@ export function VnTable<T extends { id: string }>({
   onRowClick,
 }: IVnTableProps<T>) {
   const total = columnRatios.reduce((sum, val) => sum + val, 0);
+  const [limit, setLimit] = useState(5);
+  const [page, setPage] = useState(1);
+  const [rows, setRows] = useState(values.slice(0, limit));
+  const [totalPages, setTotalPages] = useState(
+    Math.ceil(values.length / limit),
+  );
+
+  const handleNextPage = () =>
+    setPage((page) => (page + 1 <= totalPages ? page + 1 : page));
+  const handlePrevPage = () =>
+    setPage((page) => (page - 1 >= 1 ? page - 1 : page));
+
+  useEffect(() => {
+    const total = Math.ceil(values.length / limit);
+    setTotalPages(total);
+    setPage(page > total ? total : page);
+    setRows(values.slice((page - 1) * limit, page * limit));
+  }, [limit, page]);
 
   return (
     <div className="space-y-2">
+      <div className="w-full justify-end flex">
+        <VnInput
+          id="search"
+          icon={LuSearch}
+          placeholder="Search"
+          className="w-1/3"
+        />
+      </div>
+
       <div className="border border-gray-300 rounded-xl overflow-hidden">
         <Table
           striped
@@ -63,7 +93,7 @@ export function VnTable<T extends { id: string }>({
           </TableHead>
 
           <TableBody className="divide-y divide-gray-300">
-            {values.map((value, idx) => (
+            {rows.map((value, idx) => (
               <TableRow
                 onClick={() => onRowClick?.(value.id)}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -93,28 +123,36 @@ export function VnTable<T extends { id: string }>({
 
       <div className="flex items-center justify-between">
         <VnDropdown
-          values={[
-            { label: "10", value: "10" },
-            { label: "25", value: "25" },
+          label={`${limit} mục`}
+          setValue={setLimit}
+          value={limit}
+          options={[
+            { label: "5", value: 5 },
+            { label: "10", value: 5 },
+            { label: "25", value: 25 },
+            { label: "50", value: 50 },
           ]}
         />
+
         <div className="flex gap-1">
           <VnIconButton
             icon={LuArrowLeft}
             size="xs"
             className="hover:bg-gray-580"
+            onClick={handlePrevPage}
           />
           <VnIconButton
             icon={LuArrowRight}
             size="xs"
             className="hover:bg-gray-50"
+            onClick={handleNextPage}
           />
           <div className="flex gap-1 items-center text-xs text-gray-700">
             <div className="bg-gray-100 border border-gray-300 px-2 py-1 rounded-md">
-              Trang 01
+              Trang {page}
             </div>
             <span>/</span>
-            <div>10</div>
+            <div>{totalPages}</div>
           </div>
         </div>
       </div>

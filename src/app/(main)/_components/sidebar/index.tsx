@@ -63,15 +63,15 @@ export function Sidebar() {
             isCollapsed={isCollapsed}
           />
           <Tab
-            icon={LuWifi}
-            label="Add wifi"
-            url="/admin/wifi"
-            isCollapsed={isCollapsed}
-          />
-          <Tab
             icon={LuPackage}
             label="Add rooms"
             url="/admin/room"
+            isCollapsed={isCollapsed}
+          />
+          <Tab
+            icon={LuWifi}
+            label="Add wifi"
+            url="/admin/wifi"
             isCollapsed={isCollapsed}
           />
         </div>

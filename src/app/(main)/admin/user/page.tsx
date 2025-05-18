@@ -1,7 +1,7 @@
 "use client";
 
 import { defaultUserValue } from "@/configs";
-import { getUsersAsAdmin } from "@/helpers/admin";
+import { getUsersAsAdmin } from "@/actions/admin";
 import { IExtraUser } from "@/types";
 import { useEffect, useState } from "react";
 import { UserInfo, UserTable } from "./_components";

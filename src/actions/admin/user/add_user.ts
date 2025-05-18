@@ -1,6 +1,6 @@
 import { IExtraUser } from "@/types";
 import { AxiosError } from "axios";
-import { fetcher } from "../../../helpers/network/axios";
+import { fetcher } from "@/helpers";
 
 export async function addUser(data: IExtraUser): Promise<boolean> {
   try {

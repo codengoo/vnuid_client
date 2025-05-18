@@ -37,7 +37,7 @@ export function WifiInfo({
     <form
       onSubmit={formik.handleSubmit}
       className={cn(
-        "bg-gray-50 p-4 rounded-xl border border-gray-300 col-span-2 lg:col-span-1",
+        "bg-gray-50 p-4 rounded-xl border border-gray-300 col-span-2 lg:col-span-1 h-fit",
       )}
     >
       <Header title="Thông tin WiFi" />

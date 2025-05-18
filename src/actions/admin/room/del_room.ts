@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { fetcher } from "../network/axios";
+import { fetcher } from "@/helpers";
 
 export async function delRoom(id: string): Promise<boolean> {
   try {
