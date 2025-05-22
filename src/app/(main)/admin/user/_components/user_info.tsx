@@ -2,12 +2,8 @@ import { addUser, delUser } from "@/actions/admin";
 import { VnInputFormik, VnSelectFormik } from "@/components";
 import { useDataFormFormik } from "@/hooks";
 import { IExtraUser } from "@/types";
+import { object, string } from "yup";
 
-type IViewMode = "create" | "view";
-type IHelpTextSet = Record<
-  keyof Pick<IExtraUser, "gid" | "email" | "sid">,
-  string | undefined
->;
 interface IUserInfoProps {
   values: IExtraUser[];
   value: IExtraUser;
@@ -30,12 +26,26 @@ export function UserInfo({
     initial: outerValue,
     listValues: values,
     onCreateMode: onCreateMode,
-    schema: {},
+    schema: object({
+      name: string().required(),
+      email: string().email().required(),
+      sid: string().length(8).required(),
+      gid: string().required(),
+      type: string().required(),
+      official_class: string().required(),
+      phone: string().required(),
+      address: string().required(),
+      department: string().required(),
+    }
+    ),
     uniqueKeys: ["sid", "email", "gid"],
   });
 
   return (
-    <div className="bg-gray-50 p-4 rounded-xl border border-gray-300">
+    <form
+      onSubmit={formik.handleSubmit}
+      className="bg-gray-50 p-4 rounded-xl border border-gray-300"
+    >
       <Header title="Thông tin sinh viên" />
 
       <div className="grid grid-cols-2 gap-4">
@@ -105,6 +115,6 @@ export function UserInfo({
           disabled={mode === "view"}
         />
       </div>
-    </div>
+    </form>
   );
 }

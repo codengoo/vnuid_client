@@ -15,6 +15,7 @@ export function useSetup<T>({ defaultValues, preloadFn }: ISetup<T>) {
       setLoading(true);
       const tmp = await preloadFn();
       if (!tmp) return;
+
       setValues(tmp);
     } catch (error) {
     } finally {
@@ -33,6 +34,6 @@ export function useSetup<T>({ defaultValues, preloadFn }: ISetup<T>) {
     values,
     value,
     handleRowClick,
-    preload
+    preload,
   };
 }

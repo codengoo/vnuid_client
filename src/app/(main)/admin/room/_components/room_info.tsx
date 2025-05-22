@@ -4,7 +4,8 @@ import { addRoom, delRoom, getWifisAsAdmin } from "@/actions/admin";
 import { VnInputFormik, VnInputSuggest } from "@/components";
 import { useDataFormFormik } from "@/hooks";
 import { IRoom, IWifi } from "@/types";
-import { ChangeEvent, useEffect, useState } from "react";
+import { compareText } from "@/utils";
+import { useEffect, useState } from "react";
 import { LuSearch } from "react-icons/lu";
 import { object, string } from "yup";
 import { SimpleSuggestItem } from "../../_components";
@@ -41,7 +42,7 @@ export function RoomInfo({
 
   const findWifi = (search: string, handleSelect: (value: string) => void) => {
     const filteredWifis = wifiList
-      .filter((wifi) => wifi.name.includes(search))
+      .filter((wifi) => compareText(wifi.name, search))
       .map((wifi) => ({
         value: wifi.id,
         components: () => (
@@ -56,7 +57,7 @@ export function RoomInfo({
     return filteredWifis;
   };
 
-  const handleChangeWifi = (wifi_id: string) => {
+  const handleAddWifi = (wifi_id: string) => {
     if (formik.values.wifi.some((wifi) => wifi.wifi_id === wifi_id)) return;
 
     formik.setFieldValue("wifi", [
@@ -70,20 +71,25 @@ export function RoomInfo({
     ]);
   };
 
+  const handleRemoveWifi = (wifi_id: string) => {
+    formik.setFieldValue(
+      "wifi",
+      formik.values.wifi.filter((wifi) => wifi.wifi_id !== wifi_id),
+    );
+  };
+
   const handleChangeWifiSetting = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     key: keyof IRoom["wifi"][0],
+    value: IRoom["wifi"][0][keyof IRoom["wifi"][0]],
     id: string,
   ) => {
-    const text = e.currentTarget.value;
-
     formik.setFieldValue(
       "wifi",
       formik.values.wifi.map((wifi) => {
         if (wifi.wifi_id === id) {
           return {
             ...wifi,
-            [key]: text,
+            [key]: value,
           };
         }
         return wifi;
@@ -109,7 +115,10 @@ export function RoomInfo({
   }, []);
 
   return (
-    <div className="bg-gray-50 p-4 rounded-xl border border-gray-300">
+    <form
+      onSubmit={formik.handleSubmit}
+      className="bg-gray-50 p-4 rounded-xl border border-gray-300"
+    >
       <Header title="Thông tin phòng học" />
 
       <div className="grid grid-cols-2 gap-4">
@@ -133,7 +142,7 @@ export function RoomInfo({
           label="Danh sách Wifi"
           id="wifi_list"
           filterFn={findWifi}
-          onChange={(val) => handleChangeWifi(val)}
+          onChange={(val) => handleAddWifi(val)}
           disabled={mode === "view"}
           icon={LuSearch}
         />
@@ -146,9 +155,10 @@ export function RoomInfo({
             wifiList={wifiList}
             onChange={(e, key) => handleChangeWifiSetting(e, key, wifi.wifi_id)}
             key={wifi.wifi_id}
+            onRemove={() => handleRemoveWifi(wifi.wifi_id)}
           />
         ))}
       </div>
-    </div>
+    </form>
   );
 }

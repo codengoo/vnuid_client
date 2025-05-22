@@ -15,7 +15,7 @@ import {
 } from "@/components";
 import { useDataFormFormik } from "@/hooks";
 import { ICourse, IExtraUser, IRoom, IUserType } from "@/types";
-import { removeVietnameseTones } from "@/utils/text";
+import { removeTones } from "@/utils/text";
 import { useEffect, useState } from "react";
 import { LuSearch } from "react-icons/lu";
 import { object } from "yup";
@@ -91,8 +91,8 @@ export function CourseInfo({
   const renderFindUserFn = (type: IUserType) => {
     return (search: string, handleSelect: (value: string) => void) => {
       const filteredUsers = users.filter((user) => {
-        const text = removeVietnameseTones(search.toLocaleLowerCase());
-        const name = removeVietnameseTones(user.name.toLocaleLowerCase());
+        const text = removeTones(search.toLocaleLowerCase());
+        const name = removeTones(user.name.toLocaleLowerCase());
 
         return (
           user.type === type &&

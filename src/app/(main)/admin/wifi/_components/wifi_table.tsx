@@ -1,8 +1,8 @@
 import { ITableColumn } from "@/components";
 import { IWifi } from "@/types";
-import { useMemo } from "react";
-import { DataTable } from "../../_components";
 import { Paths } from "@/utils";
+import { useEffect, useMemo } from "react";
+import { DataTable } from "../../_components";
 
 interface IWifiTableProps {
   values: IWifi[];

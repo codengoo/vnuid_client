@@ -39,10 +39,8 @@ export function VnTable<T extends { id: string }>({
   const total = columnRatios.reduce((sum, val) => sum + val, 0);
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
-  const [rows, setRows] = useState(values.slice(0, limit));
-  const [totalPages, setTotalPages] = useState(
-    Math.ceil(values.length / limit),
-  );
+  const [rows, setRows] = useState<T[]>([]);
+  const [totalPages, setTotalPages] = useState(0);
 
   const handleNextPage = () =>
     setPage((page) => (page + 1 <= totalPages ? page + 1 : page));
@@ -50,11 +48,14 @@ export function VnTable<T extends { id: string }>({
     setPage((page) => (page - 1 >= 1 ? page - 1 : page));
 
   useEffect(() => {
+    console.log(values);
+
     const total = Math.ceil(values.length / limit);
+    const _page = total !== 0 ? Math.min(page || 1, total) : 0;
     setTotalPages(total);
-    setPage(page > total ? total : page);
-    setRows(values.slice((page - 1) * limit, page * limit));
-  }, [limit, page]);
+    setPage(_page);
+    setRows(values.slice((_page - 1) * limit, _page * limit));
+  }, [limit, page, values]);
 
   return (
     <div className="space-y-2">

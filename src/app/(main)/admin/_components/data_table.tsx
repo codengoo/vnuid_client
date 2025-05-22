@@ -1,7 +1,7 @@
-import { ITableColumn, VnInput, VnTable } from "@/components";
+import { ITableColumn, VnTable } from "@/components";
 import { Paths } from "@/utils";
 import cn from "classnames";
-import { LuSearch } from "react-icons/lu";
+import { useEffect } from "react";
 
 interface IDataTableProps<T extends { id: string }> {
   values: T[];

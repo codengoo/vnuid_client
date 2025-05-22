@@ -33,7 +33,6 @@ export function useDataFormFormik<T extends { id: string }>({
     validationSchema: schema,
     validate: async (values) => {
       const errors: Record<keyof T, string> = {} as Record<keyof T, string>;
-      console.log(values, listValues, uniqueKeys);
 
       for (let key of uniqueKeys) {
         for (let i = 0; i < listValues.length; i++) {
@@ -43,7 +42,7 @@ export function useDataFormFormik<T extends { id: string }>({
           }
         }
       }
-
+      
       return errors;
     },
     onSubmit: async () => {
@@ -53,7 +52,7 @@ export function useDataFormFormik<T extends { id: string }>({
   });
 
   const handleSave = async () => {
-    try {
+    try { 
       await onAdd(formik.values);
       toast.success("Thêm thành công");
       formik.resetForm();
@@ -90,7 +89,7 @@ export function useDataFormFormik<T extends { id: string }>({
       <div className="flex justify-between items-center h-16 ">
         <h1 className="font-semibold text-2xl text-gray-700">{title}</h1>
         <div className="flex gap-2">
-          {mode == "view" && (
+          {mode == "view" && formik.values.id != "" && (
             <VnButton
               label="Xóa"
               color={"red"}

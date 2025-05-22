@@ -9,18 +9,27 @@ interface IWifiSettingItemProps {
   wifiList: IWifi[];
   value: IRoom["wifi"][0];
   onChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     key: keyof IRoom["wifi"][0],
+    value: IRoom["wifi"][0][keyof IRoom["wifi"][0]],
   ) => void;
+  onRemove: () => void;
 }
 export function WifiItemSetting({
   onChange,
+  onRemove,
   value,
   wifiList,
 }: IWifiSettingItemProps) {
   const wifi = useMemo(() => {
     return wifiList.find((wifi) => wifi.id === value.wifi_id);
   }, [wifiList, value.wifi_id]);
+
+  const handleOnChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    key: keyof IRoom["wifi"][0],
+  ) => {
+    onChange(key, e.target.value);
+  };
 
   if (!wifi) return null;
   return (
@@ -44,14 +53,14 @@ export function WifiItemSetting({
           id="rssi"
           value={value.rssi}
           className="w-24"
-          onChange={(e) => onChange(e, "rssi")}
+          onChange={(e) => handleOnChange(e, "rssi")}
         />
 
         <VnSelect
           id="type"
           value={value.type}
           className="w-24"
-          onChange={(e) => onChange(e, "type")}
+          onChange={(e) => handleOnChange(e, "type")}
           options={[
             { value: "LARGER", label: "Lớn hơn" },
             { value: "SMALLER", label: "Nhỏ hơn" },
@@ -59,7 +68,7 @@ export function WifiItemSetting({
         />
       </div>
 
-      <VnIconButton icon={LuX} color="red" />
+      <VnIconButton icon={LuX} color="red" onClick={onRemove} />
     </div>
   );
 }
