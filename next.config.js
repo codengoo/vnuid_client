@@ -1,7 +1,7 @@
 import withFlowbiteReact from "flowbite-react/plugin/nextjs";
-import type { NextConfig } from "next";
+// import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   async redirects() {
     return [
       {
