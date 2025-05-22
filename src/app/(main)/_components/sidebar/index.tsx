@@ -3,6 +3,7 @@
 import { VnLogo } from "@/app/_components";
 import { VnAvatarName } from "@/app/_components/avatar";
 import { VnIconButton } from "@/components";
+import { useAuth } from "@/contexts";
 import cn from "classnames";
 import { useState } from "react";
 import {
@@ -21,6 +22,7 @@ import { Tab } from "../tab";
 export function Sidebar() {
   const [isCollapsed, setCollapsed] = useState(true);
   const toggleCollapsed = () => setCollapsed(!isCollapsed);
+  const { user } = useAuth();
   return (
     <div
       className={cn("flex-none p-6 py-4 gap-8 flex flex-col", {
@@ -38,42 +40,50 @@ export function Sidebar() {
 
       <div className="flex flex-col justify-between h-full">
         <div className="flex flex-col gap-1">
-          <Tab
-            icon={LuPresentation}
-            label="Lesson"
-            url="/lesson"
-            isCollapsed={isCollapsed}
-          />
-          <Tab
-            icon={LuClock}
-            label="History"
-            url="/history"
-            isCollapsed={isCollapsed}
-          />
-          <Tab
-            icon={LuUsers}
-            label="Add users"
-            url="/admin/user"
-            isCollapsed={isCollapsed}
-          />
-          <Tab
-            icon={LuBook}
-            label="Add courses"
-            url="/admin/course"
-            isCollapsed={isCollapsed}
-          />
-          <Tab
-            icon={LuPackage}
-            label="Add rooms"
-            url="/admin/room"
-            isCollapsed={isCollapsed}
-          />
-          <Tab
-            icon={LuWifi}
-            label="Add wifi"
-            url="/admin/wifi"
-            isCollapsed={isCollapsed}
-          />
+          {user && user.role === "teacher" && (
+            <>
+              <Tab
+                icon={LuPresentation}
+                label="Môn học"
+                url="/lesson"
+                isCollapsed={isCollapsed}
+              />
+              <Tab
+                icon={LuClock}
+                label="Lịch sử"
+                url="/history"
+                isCollapsed={isCollapsed}
+              />
+            </>
+          )}
+          {user && user.role === "admin" && (
+            <>
+              <Tab
+                icon={LuUsers}
+                label="Thêm tài khoản"
+                url="/admin/user"
+                isCollapsed={isCollapsed}
+              />
+              <Tab
+                icon={LuBook}
+                label="Thêm khóa học"
+                url="/admin/course"
+                isCollapsed={isCollapsed}
+              />
+              <Tab
+                icon={LuPackage}
+                label="Thêm phòng"
+                url="/admin/room"
+                isCollapsed={isCollapsed}
+              />
+              <Tab
+                icon={LuWifi}
+                label="Thêm wifi"
+                url="/admin/wifi"
+                isCollapsed={isCollapsed}
+              />
+            </>
+          )}
         </div>
 
         <div

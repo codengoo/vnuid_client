@@ -1,7 +1,7 @@
 "use client";
 
 import { getProfile } from "@/actions/login";
-import { IUser } from "@/types";
+import { IAuth } from "@/types";
 import { useRouter } from "next/navigation";
 import {
   createContext,
@@ -12,15 +12,15 @@ import {
 } from "react";
 
 interface AuthContextType {
-  user: IUser | null;
-  setUser: (user: IUser | null) => void;
+  user: IAuth | null;
+  setUser: (user: IAuth | null) => void;
   loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<IUser | null>(null);
+  const [user, setUser] = useState<IAuth | null>(null);
   const [loading, setLoading] = useState(true);
   const { push } = useRouter();
   const preload = async () => {

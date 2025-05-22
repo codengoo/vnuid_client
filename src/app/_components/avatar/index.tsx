@@ -57,7 +57,7 @@ export function VnAvatarName({ isCollapse }: IVnAvatarNameProps) {
             <p className="font-semibold text-gray-800 overflow-hidden text-nowrap truncate">
               {user?.name}
             </p>
-            <p className="text-xs text-gray-600">Teacher</p>
+            <p className="text-xs text-gray-600">{user?.email}</p>
           </div>
 
           <Tooltip

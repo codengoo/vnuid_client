@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts";
 import Link from "next/link";
 import { LuFingerprint } from "react-icons/lu";
 
@@ -5,6 +6,7 @@ interface IVnLogoProps {
   isCollapsed: boolean;
 }
 export function VnLogo({ isCollapsed }: IVnLogoProps) {
+  const { user } = useAuth();
   return (
     <div className="flex gap-4 items-center">
       <Link href={"/dashboard"}>
@@ -19,11 +21,16 @@ export function VnLogo({ isCollapsed }: IVnLogoProps) {
             Vnuid attendance
           </h1>
           <p className="text-xs text-gray-400 tracking-widest font-light italic">
-            Teacher
+            {user
+              ? user.role === "teacher"
+                ? "Giáo viên"
+                : user.role === "admin"
+                  ? "Quản lý"
+                  : "Vô danh"
+              : ""}
           </p>
         </div>
       )}
-
     </div>
   );
 }

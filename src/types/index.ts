@@ -1,5 +1,12 @@
 export type IUserType = "admin" | "student" | "teacher";
 export type IThreshold = "SMALLER" | "LARGER";
+export interface IAuth {
+  id: string;
+  name: string;
+  role: IUserType;
+  email: string;
+}
+
 export interface IUser {
   id: string;
   sid: string;
