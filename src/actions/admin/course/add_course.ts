@@ -7,6 +7,8 @@ export async function addCourse(
   studentIds: string[],
 ): Promise<boolean> {
   try {
+    console.log("Come here");
+    
     const response = await fetcher.post("/admin/course", {
       ...course,
       student_ids: studentIds,

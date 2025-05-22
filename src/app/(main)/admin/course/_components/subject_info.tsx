@@ -15,7 +15,7 @@ import {
 } from "@/components";
 import { useDataFormFormik } from "@/hooks";
 import { ICourse, IExtraUser, IRoom, IUserType } from "@/types";
-import { removeTones } from "@/utils/text";
+import { compareText } from "@/utils/text";
 import { useEffect, useState } from "react";
 import { LuSearch } from "react-icons/lu";
 import { object } from "yup";
@@ -46,15 +46,13 @@ export function CourseInfo({
     setStudentIds([]);
   };
 
-  const schema = object({});
-
   const { Header, mode, formik } = useDataFormFormik<ICourse>({
     onAdd: async (value) => await addCourse(value, studentIds),
     onDel: delCourse,
     onCreateMode: onCreateMode,
     initial: outerValue,
     listValues: values,
-    schema: schema,
+    schema: object({}),
     onChange: () => {
       setStudentIds([]);
       onChange?.();
@@ -90,18 +88,13 @@ export function CourseInfo({
 
   const renderFindUserFn = (type: IUserType) => {
     return (search: string, handleSelect: (value: string) => void) => {
-      const filteredUsers = users.filter((user) => {
-        const text = removeTones(search.toLocaleLowerCase());
-        const name = removeTones(user.name.toLocaleLowerCase());
-
-        return (
+      const filteredUsers = users.filter(
+        (user) =>
           user.type === type &&
-          (name.includes(text) ||
-            user.sid.includes(search) ||
-            user.email.includes(search) ||
-            user.id === search)
-        );
-      });
+          (compareText(user.name, search) ||
+            compareText(user.email, search) ||
+            compareText(user.sid, search)),
+      );
 
       return filteredUsers.map<ItemSuggest>((user) => ({
         value: user.id,
@@ -116,26 +109,27 @@ export function CourseInfo({
     search: string,
     handleSelect: (value: string) => void,
   ) => {
-    const filteredRooms = rooms.filter((room) => room.name.includes(search));
-
-    return filteredRooms.map<ItemSuggest>((room) => ({
-      value: room.id,
-      components: () => (
-        <SimpleSuggestItem
-          title={room.name}
-          description={room.address}
-          onClick={() => handleSelect(room.id)}
-        />
-      ),
-    }));
+    return rooms
+      .filter((room) => compareText(room.name, search))
+      .map<ItemSuggest>((room) => ({
+        value: room.id,
+        components: () => (
+          <SimpleSuggestItem
+            title={room.name}
+            description={room.address}
+            onClick={() => handleSelect(room.id)}
+          />
+        ),
+      }));
   };
+
   useEffect(() => {
     preload();
-    setStudentIds(outerValue?.students.map((s) => s.id) || []);
+    setStudentIds(outerValue?.students?.map((s) => s.id) || []);
   }, [outerValue]);
 
   return (
-    <div className="col-span-3">
+    <form onSubmit={formik.handleSubmit} className="col-span-1">
       <Header title=" Thông tin khóa học" />
 
       <div className="grid grid-cols-4 gap-4">
@@ -221,6 +215,6 @@ export function CourseInfo({
           })}
         </div>
       </div>
-    </div>
+    </form>
   );
 }

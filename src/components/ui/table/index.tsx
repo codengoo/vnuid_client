@@ -48,8 +48,6 @@ export function VnTable<T extends { id: string }>({
     setPage((page) => (page - 1 >= 1 ? page - 1 : page));
 
   useEffect(() => {
-    console.log(values);
-
     const total = Math.ceil(values.length / limit);
     const _page = total !== 0 ? Math.min(page || 1, total) : 0;
     setTotalPages(total);

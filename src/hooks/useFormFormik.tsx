@@ -42,7 +42,7 @@ export function useDataFormFormik<T extends { id: string }>({
           }
         }
       }
-      
+
       return errors;
     },
     onSubmit: async () => {
@@ -52,7 +52,7 @@ export function useDataFormFormik<T extends { id: string }>({
   });
 
   const handleSave = async () => {
-    try { 
+    try {
       await onAdd(formik.values);
       toast.success("Thêm thành công");
       formik.resetForm();
@@ -94,7 +94,6 @@ export function useDataFormFormik<T extends { id: string }>({
               label="Xóa"
               color={"red"}
               disabled={formik.isSubmitting}
-              onClick={handleDelete}
               type="submit"
             />
           )}

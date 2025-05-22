@@ -1,5 +1,5 @@
-import { AxiosError } from "axios";
 import { fetcher } from "@/helpers";
+import { AxiosError } from "axios";
 
 export async function delCourse(id: string): Promise<boolean> {
   try {

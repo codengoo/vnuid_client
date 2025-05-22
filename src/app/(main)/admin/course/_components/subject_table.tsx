@@ -24,12 +24,12 @@ export function CourseTable({ onRowClick, courses }: ISubjectTableProps) {
   }, []);
 
   return (
-    <div className="flex flex-col gap-2 col-span-2">
+    <div className="flex flex-col gap-2 col-span-1">
       <DataTable
         values={courses}
         columns={columns}
         onRowClick={onRowClick}
-        columnRatios={[0.5, 1, 3]}
+        columnRatios={[0.5, 2, 1, 1]}
       />
     </div>
   );
