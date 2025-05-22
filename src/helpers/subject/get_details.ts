@@ -1,13 +1,10 @@
-import { ICourse } from "../../types";
+import { fetchCatch } from "@/actions/common";
+import { ICourseDetails } from "../../types";
 import { fetcher } from "../network/axios";
 
-export async function getCourseDetails(id: string) {
-  try {
-    const response = await fetcher.get("/subject/class/" + id);
-    if (response.status === 200) return response.data.data as ICourse;
-    else return;
-  } catch (error) {
-    console.log(error);
-    return;
-  }
+export async function getCourseDetails(courseID: string) {
+  const result = await fetchCatch(() =>
+    fetcher.get(`/subject/class/${courseID}`),
+  );
+  return result.data as ICourseDetails;
 }

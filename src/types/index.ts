@@ -36,14 +36,17 @@ export interface ICourse {
   room_id: string;
   is_done: boolean;
   teacher_id: string;
-  session?: ISession[];
-  students?: IUser[];
-  teacher?: IUser;
-  room?: IRoom;
   _count?: {
     students: number;
     session: number;
   };
+}
+
+export interface ICourseDetails extends ICourse {
+  session: ISession[];
+  students: IUser[];
+  teacher: IUser;
+  room: IRoom;
 }
 
 export interface ISession {

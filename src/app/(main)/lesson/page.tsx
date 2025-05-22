@@ -1,30 +1,37 @@
 "use client";
 
 import { CourseCard, StudentCard } from "@/app/_components";
-import { VnInput, VnSwitchMode } from "@/components";
-import { VnDrawer } from "@/components";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
+import { VnDrawer, VnInput, VnSwitchMode } from "@/components";
 import { getCourseDetails, getSubjects } from "@/helpers/subject";
-import { ICourse } from "@/types";
+import { ICourse, ICourseDetails } from "@/types";
 import { formatCurrentDate } from "@/utils";
 import { useEffect, useState } from "react";
 import { LuClock, LuClockAlert, LuSearch } from "react-icons/lu";
+import { toast } from "react-toastify";
 
 export default function Lesson() {
-  const [subjects, setSubjects] = useState<ICourse[]>([]);
-  const [subjectDetail, setSubjectDetail] = useState<ICourse | null>(null);
+  const [courses, setCourses] = useState<ICourse[]>([]);
+  const [courseDetail, setCourseDetail] = useState<ICourseDetails | null>(null);
   const [isOpenDrawer, setOpenDrawer] = useState(false);
   const prepare = async () => {
-    const subjects = await getSubjects();
-    console.log(subjects);
-    setSubjects(subjects);
+    try {
+      const courses = await getSubjects();
+      setCourses(courses);
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
   };
 
-  const handleShowStudents = async (subjectId: string) => {
-    const subject = await getCourseDetails(subjectId);
-    if (subject) {
-      setSubjectDetail(subject);
-      setOpenDrawer(true);
+  const handleShowStudents = async (courseID: string) => {
+    try {
+      const course = await getCourseDetails(courseID);
+      if (course) {
+        setCourseDetail(course);
+        setOpenDrawer(true);
+      }
+    } catch (error) {
+      toast.error((error as Error).message);
     }
   };
 
@@ -58,20 +65,19 @@ export default function Lesson() {
         </div>
 
         <div className="grid grid-cols-4 gap-2 justify-between items-center">
-          {subjects.map((subject) => (
+          {courses.map((subject) => (
             <CourseCard
               key={subject.id}
               subject={subject}
               onShowStudents={() => handleShowStudents(subject.id)}
-              
             />
           ))}
         </div>
 
         <VnDrawer isOpen={isOpenDrawer} setIsOpen={setOpenDrawer}>
           <div className="space-y-1">
-            {subjectDetail &&
-              subjectDetail.students.map((student) => (
+            {courseDetail &&
+              courseDetail?.students.map((student) => (
                 <StudentCard
                   student={student}
                   style="highlight"

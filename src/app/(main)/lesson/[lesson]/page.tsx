@@ -1,21 +1,21 @@
 "use client";
 
 import { StudentCard } from "@/app/_components";
-import { VnButton, VnChip } from "@/components";
 import { HeaderContentInfo, MainContentInfo } from "@/app/_layout";
-import { getCourseDetails, getCurrentSessions } from "@/helpers/subject";
+import { VnButton, VnChip } from "@/components";
+import { getCourseDetails } from "@/helpers/subject";
 import { ExportModal, SessionModal, StudentInfoModal } from "@/modal";
-import { ISession, ICourse } from "@/types";
+import { ICourseDetails, ISession } from "@/types";
 import { ApexOptions } from "apexcharts";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { LuPlus } from "react-icons/lu";
-import { InfoBox, CourseInfo, TeacherBox } from "./_components";
+import { CourseInfo, InfoBox, TeacherBox } from "./_components";
 import CheckinBox from "./_components/attendance-box";
 export default function LessonDetail() {
   const { lesson } = useParams<{ lesson: string }>();
-  const [courseDetail, setCourseDetail] = useState<ICourse | null>(null);
+  const [courseDetail, setCourseDetail] = useState<ICourseDetails | null>(null);
   const [isOpenPopup, setOpenPopup] = useState<boolean>(false);
   const [isOpenEditPopup, setOpenEditPopup] = useState<boolean>(false);
   const [sessionData, setSessionData] = useState<ISession>();
@@ -82,17 +82,12 @@ export default function LessonDetail() {
     },
   };
 
-  const handleOpenPopup = () => {
-    setOpenPopup(true);
-  };
+  const handleOpenEditSessionModal = () => setOpenPopup(true);
+  const handleOpenExportModal = () => setOpenExportModal(true);
 
   const handleOpenStudentInfo = async (studentId: string) => {
     setStudentId(studentId);
     setOpenDrawer(true);
-  };
-
-  const handleOpenExportModal = () => {
-    setOpenExportModal(true);
   };
 
   const handleEditSession = (id: string) => {
@@ -116,7 +111,7 @@ export default function LessonDetail() {
   return (
     <MainContentInfo>
       <HeaderContentInfo>
-        <CourseInfo course={courseDetail}  onExport={handleOpenExportModal} />
+        <CourseInfo course={courseDetail} onExport={handleOpenExportModal} />
         <div className="flex gap-4">
           <div className="w-1/3 space-y-4 flex-none">
             <TeacherBox teacher={courseDetail.teacher} />
@@ -158,7 +153,11 @@ export default function LessonDetail() {
           <h2 className="text-2xl font-medium text-gray-700">
             Cấu hình điểm danh
           </h2>
-          <VnButton label="Thêm" icon={LuPlus} onClick={handleOpenPopup} />
+          <VnButton
+            label="Thêm"
+            icon={LuPlus}
+            onClick={handleOpenEditSessionModal}
+          />
         </div>
 
         <div className="grid grid-cols-4 gap-4">
@@ -219,7 +218,7 @@ export default function LessonDetail() {
       <ExportModal
         isOpen={isOpenExportModal}
         setOpen={setOpenExportModal}
-        subjectID={courseDetail.id}
+        courseID={courseDetail.id}
       />
     </MainContentInfo>
   );

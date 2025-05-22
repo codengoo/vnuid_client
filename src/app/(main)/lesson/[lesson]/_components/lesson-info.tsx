@@ -19,10 +19,11 @@ export function CourseInfo({ course, onExport }: LessonInfoProps) {
 
   useEffect(() => {
     if (!course) return;
-    const sessions = course.session.filter((session) =>
+    const sessions = course?.session?.filter((session) =>
       isRunningNow(session.start, session.duration),
     );
 
+    // @ts-ignore
     setSessionNow(sessions.length > 0 ? sessions[0] : null);
   }, [course]);
 
